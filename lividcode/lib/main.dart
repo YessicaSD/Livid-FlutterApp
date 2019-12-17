@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/user.dart';
+import 'package:lividcode/info/defs.dart';
 import 'package:lividcode/mainScreen/AddTask.dart';
 import 'package:provider/provider.dart';
 import 'baseClasses/task.dart';
@@ -28,9 +29,11 @@ class MainSreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("HomeScreen")),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: mainColor,
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddTask()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => AddTask()));
         },
       ),
       body: Column(
@@ -75,7 +78,7 @@ class ToDoList extends StatelessWidget {
 class TaskWidget extends StatelessWidget {
   final Task actualTask;
   TaskWidget(this.actualTask);
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
