@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/user.dart';
+import 'package:lividcode/mainScreen/AddTask.dart';
 import 'package:provider/provider.dart';
 import 'baseClasses/task.dart';
 import 'mainScreen/profile.dart';
@@ -26,11 +27,20 @@ class MainSreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("HomeScreen")),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddTask()));
+        },
+      ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ProfileWidget(),
+          Container(
+            color: Colors.orange, // TODO: poned el que querais
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ProfileWidget(),
+            ),
           ),
           Expanded(child: ToDoList()),
         ],
