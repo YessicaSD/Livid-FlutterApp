@@ -40,6 +40,7 @@ class MainSreen extends StatelessWidget {
           )
               .then((value) {
             if (value != null) {
+              if (!Provider.of<User>(context).toDoList.isInTaskList(value))
                 Provider.of<User>(context)
                     .toDoList
                     .addTask(value.name, value.description);
