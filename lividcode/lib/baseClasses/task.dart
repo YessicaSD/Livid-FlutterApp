@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-class Task{
+class Task {
   String name;
   String description;
   Float startTime, endTime, duration;
@@ -8,37 +8,39 @@ class Task{
   Task(this.name, this.description);
 }
 
-class TaskList{
+class TaskList {
   List<Task> taskList = List<Task>();
 
   TaskList();
   TaskList.fromList(this.taskList);
 
-  factory TaskList.startTaskList()
-  {
+  factory TaskList.startTaskList() {
     return TaskList.fromList(List<Task>());
   }
 
-  factory TaskList.tryTaskList()
-  {
+  factory TaskList.tryTaskList() {
     List<Task> auxList = List<Task>();
     auxList.add(Task("Hamburguesa", "La madre que me parió"));
     auxList.add(Task("Tennis", "La madre ha sido asesinado"));
     return TaskList.fromList(auxList);
   }
 
-  void addTask(String name, String description)
-  {
+  bool isInTaskList(Task t) {
+    for (var i in taskList) {
+      if (i.name == t.name && i.description == t.description) return true;
+    }
+    return false;
+  }
+
+  void addTask(String name, String description) {
     taskList.add(Task(name, description));
   }
 
-  Task getTask(int i)
-  {
+  Task getTask(int i) {
     return taskList[i];
   }
 
-  int length()
-  {
+  int length() {
     return taskList.length;
   }
 }

@@ -33,7 +33,18 @@ class MainSreen extends StatelessWidget {
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => AddTask()));
+              .push(
+            MaterialPageRoute(
+              builder: (_) => AddTask(),
+            ),
+          )
+              .then((value) {
+            if (value != null) {
+                Provider.of<User>(context)
+                    .toDoList
+                    .addTask(value.name, value.description);
+            }
+          });
         },
       ),
       body: Column(
