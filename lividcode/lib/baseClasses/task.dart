@@ -36,6 +36,10 @@ class TaskList {
     taskList.add(Task(name, description));
   }
 
+  void addTaskFromTask(Task t){
+    taskList.add(t);
+  }
+
   Task getTask(int i) {
     return taskList[i];
   }

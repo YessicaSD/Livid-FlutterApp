@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/info/defs.dart';
+import 'package:lividcode/taskClasses/taskCreate.dart';
 
 class AddTask extends StatefulWidget {
   @override
@@ -53,10 +54,13 @@ class _AddTaskState extends State<AddTask> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) => AddTask(),
-              //builder: (_) => CreateTask(),
+              builder: (_) => CreateTask(),
             ),
-          );
+          ).then((task){
+            if(task != null){
+              _list.addTaskFromTask(task);
+            }
+          });
         },
       ),
       body: ListView.builder(

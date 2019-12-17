@@ -30,14 +30,15 @@ class CreateTask extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: /*(name_ctrl.text.isEmpty ? Container() : */FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: ()
-        {
+        onPressed: () {
           auxTask = new Task(name_ctrl.text, description_ctrl.text);
-          Navigator.of(context).pop(auxTask);
+          (auxTask.name.isEmpty
+              ? Navigator.of(context).pop(null)
+              : Navigator.of(context).pop(auxTask));
         },
-      ),
+      )/*)*/
     );
   }
 }
