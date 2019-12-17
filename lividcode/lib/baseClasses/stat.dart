@@ -37,3 +37,4 @@ class StatList {
 List<String> allStats = [
   'Strength', 'Intelligence', 'Stamine', 'Fun', 'Social', 'Hygine'
 ];
+
