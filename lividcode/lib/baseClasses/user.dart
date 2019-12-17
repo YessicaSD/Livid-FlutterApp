@@ -7,6 +7,7 @@ class User {
   StatList stats;
   TaskList toDoList;
 
+
   User(this.name, this.imagePath, this.stats, this.toDoList);
 
   factory User.userStart()
