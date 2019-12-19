@@ -18,21 +18,27 @@ class Stat {
   Stat(this.name, this.value, this.type, this.color);
 
   Widget printStat() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Row(
-          children: <Widget>[Text(name + ":"), Text(value.toString())],
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-          color: color,
-          width: 300,
-          height: 5,
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            children: <Widget>[Text(name + ":"), Text(value.toString())],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+            width: 300,
+            height: 5,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: color,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

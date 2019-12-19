@@ -83,7 +83,13 @@ class ToDoList extends StatelessWidget {
     return Container(
       child: Column(
         children: <Widget>[
-          Text("ToDoList"),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "To do list",
+              style: TextStyle(fontSize: 17),
+            ),
+          ),
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
@@ -105,7 +111,14 @@ class TaskWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(actualTask.name),
+      child: Card(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        child: Text(
+          actualTask.name,
+          style: TextStyle(fontSize: 15),
+        ),
+      )),
     );
   }
 }
