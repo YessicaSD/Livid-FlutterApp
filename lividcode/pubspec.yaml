@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   provider: ^3.2.0
   cloud_firestore: ^0.12.11
+  #image_picker: ^0.6.2+2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -44,7 +45,7 @@ flutter:
 
   assets:
    - lib/info/tasksExamples.json
-
+   - lib/assets/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg

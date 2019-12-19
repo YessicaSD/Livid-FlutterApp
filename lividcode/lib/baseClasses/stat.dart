@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum statType {
   ST_STRENGTH,
   ST_INTELLIGENCE,
@@ -12,8 +14,27 @@ class Stat {
   String name;
   int value;
   statType type;
+  Color color;
+  Stat(this.name, this.value, this.type, this.color);
 
-  Stat(this.name, this.value, this.type);
+  Widget printStat() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[Text(name + ":"), Text(value.toString())],
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
+          color: color,
+          width: 300,
+          height: 5,
+        )
+      ],
+    );
+  }
 }
 
 class StatList {
@@ -24,17 +45,20 @@ class StatList {
   factory StatList.statListStart() {
     List<Stat> auxList = new List<Stat>();
     for (int i = 0; i < allStats.length; i++)
-      auxList.add(new Stat(allStats[i], 0, statType.values[i]));
+      auxList.add(new Stat(allStats[i], 10, statType.values[i], Colors.blue));
     return StatList(auxList);
   }
 
-  Stat getStat(int type)
-  {
+  Stat getStat(int type) {
     return statList[type];
   }
 }
 
 List<String> allStats = [
-  'Strength', 'Intelligence', 'Stamine', 'Fun', 'Social', 'Hygine'
+  'Strength',
+  'Intelligence',
+  'Stamine',
+  'Fun',
+  'Social',
+  'Hygine'
 ];
-

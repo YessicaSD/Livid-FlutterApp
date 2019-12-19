@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 import 'package:provider/provider.dart';
 import 'package:lividcode/baseClasses/user.dart';
 
@@ -11,35 +12,31 @@ class ProfileWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Center(
-              child: Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.blue,
+              child: InkWell(
+            onTap: () {},
+            child: Container(
+              child: Image(
+                fit: BoxFit.fill,
+                image: AssetImage('lib/assets/avatar.png'),
+              ),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.blue,
+              ),
             ),
           )),
           SizedBox(
             width: 20,
           ),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text("Strength: " + user.getStat(0).value.toString()),
-                  Text("Intelligence: " + user.getStat(1).value.toString()),
-                  Text("Stamina: " + user.getStat(2).value.toString()),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Text("Fun: " + user.getStat(3).value.toString()),
-                  Text("Social: " + user.getStat(4).value.toString()),
-                  Text("Hygine: " + user.getStat(5).value.toString()),
-                ],
-              ),
+              for (int i = 0; i < user.stats.statList.length; ++i)
+                user.getStat(i).printStat(),
             ],
-          )
+          ),
         ],
       ),
     );
