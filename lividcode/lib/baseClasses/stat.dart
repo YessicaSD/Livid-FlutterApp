@@ -50,8 +50,17 @@ class StatList {
 
   factory StatList.statListStart() {
     List<Stat> auxList = new List<Stat>();
+    List<Color> colors = new List<Color>();
+    colors.length = statType.ST_MAX.index;
+    colors[statType.ST_FUN.index] = Colors.yellow;
+    colors[statType.ST_HYGINE.index] = Colors.blue;
+    colors[statType.ST_INTELLIGENCE.index] = Colors.lightBlue;
+    colors[statType.ST_SOCIAL.index] = Colors.purple;
+    colors[statType.ST_STAMINE.index] = Colors.limeAccent[400];
+    colors[statType.ST_STRENGTH.index] = Colors.red;
+
     for (int i = 0; i < allStats.length; i++)
-      auxList.add(new Stat(allStats[i], 10, statType.values[i], Colors.blue));
+      auxList.add(new Stat(allStats[i], 10, statType.values[i], colors[i]));
     return StatList(auxList);
   }
 

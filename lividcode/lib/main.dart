@@ -62,7 +62,7 @@ class MainSreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Container(
-            color: Colors.orange, // TODO: poned el que querais
+            color: Colors.grey[600], // TODO: poned el que querais
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: ProfileWidget(),
