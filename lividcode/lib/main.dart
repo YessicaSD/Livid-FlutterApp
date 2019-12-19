@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/user.dart';
 import 'package:lividcode/info/defs.dart';
@@ -9,17 +10,27 @@ import 'mainScreen/profile.dart';
 void main() => runApp(MainPage());
 
 class MainPage extends StatelessWidget {
-  User user = User.userStart();
-
   @override
   Widget build(BuildContext context) {
-    return Provider<User>.value(
-      value: user,
-      child: MaterialApp(
-        theme: ThemeData(primaryColor: Color.fromRGBO(47, 44, 66, 1.0)),
-        home: MainSreen(),
-      ),
-    );
+    return StreamBuilder(
+        stream: Firestore.instance
+            .document('users/alex2521999@gmail.com')
+            .snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          DocumentSnapshot doc = snapshot.data;
+          // User user = User.userStart();
+          User user = User.fromFirestore(doc);
+          return Provider<User>.value(
+            value: user,
+            child: MaterialApp(
+              theme: ThemeData(primaryColor: Color.fromRGBO(47, 44, 66, 1.0)),
+              home: MainSreen(),
+            ),
+          );
+        });
   }
 }
 

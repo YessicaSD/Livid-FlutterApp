@@ -10,7 +10,18 @@ class ProfileWidget extends StatelessWidget {
     return Container(
       child: Row(
         children: <Widget>[
-          Center(child: Icon(Icons.image)),
+          Center(
+              child: Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.blue,
+            ),
+          )),
+          SizedBox(
+            width: 20,
+          ),
           Row(
             children: <Widget>[
               Column(
