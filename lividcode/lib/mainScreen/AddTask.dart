@@ -72,18 +72,20 @@ class _AddTaskState extends State<AddTask> {
           });
         },
       ),
-      body: ListView.builder(
-        itemCount: _list.length(),
-        itemBuilder: (context, i) {
-          return ListTile(
-            onTap: () {
-              Navigator.of(context).pop(_list.getTask(i));
-            },
-            title: Text(_list.getTask(i).name),
-            subtitle: Text(_list.getTask(i).description),
-          );
-        },
-      ),
+      body: ListView.separated(
+          itemCount: _list.length(),
+          itemBuilder: (context, i) {
+            return ListTile(
+              onTap: () {
+                Navigator.of(context).pop(_list.getTask(i));
+              },
+              title: Text(_list.getTask(i).name),
+              subtitle: Text(_list.getTask(i).description),
+            );
+          },
+          separatorBuilder: (context, index) {
+            return Divider();
+          }),
     );
   }
 }
