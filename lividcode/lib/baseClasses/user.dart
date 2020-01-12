@@ -8,6 +8,7 @@ class User {
   String imagePath;
   StatList stats;
   TaskList toDoList;
+  List<Task> costumTasks;
 
   User(this.name, this.imagePath, this.stats, this.toDoList);
 
@@ -15,7 +16,11 @@ class User {
       : name = doc.data['name'],
         imagePath = doc.data['imagePath'],
         stats = StatList.statListStart(),
-        toDoList = TaskList.tryTaskList();
+        toDoList = TaskList.tryTaskList() {
+    doc.reference.collection('CostumTasks').getDocuments().then((val) {
+      if (val != null) costumTasks = ToTaskList(val);
+    });
+  }
 
   factory User.userStart() {
     return new User(

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/info/defs.dart';
 import 'package:lividcode/taskClasses/taskCreate.dart';
+import 'package:provider/provider.dart';
+import 'package:lividcode/baseClasses/user.dart';
 
 class AddTask extends StatefulWidget {
   @override
@@ -25,7 +27,12 @@ class _AddTaskState extends State<AddTask> {
     var _jsonGames = jsonDecode(data);
 
     for (var i in _jsonGames['Tasks']) {
-      _list.addTask(i['name'], i['description']);
+      _list.CreateAddTask(i['name'], i['description']);
+    }
+    if (Provider.of<User>(context).costumTasks != null) {
+      for (var task in Provider.of<User>(context).costumTasks) {
+        _list.addTask(task);
+      }
     }
 
     try {
@@ -52,12 +59,14 @@ class _AddTaskState extends State<AddTask> {
         child: Icon(Icons.edit),
         backgroundColor: mainColor,
         onPressed: () {
-          Navigator.of(context).push(
+          Navigator.of(context)
+              .push(
             MaterialPageRoute(
               builder: (_) => CreateTask(),
             ),
-          ).then((task){
-            if(task != null){
+          )
+              .then((task) {
+            if (task != null) {
               _list.addTaskFromTask(task);
             }
           });
@@ -65,7 +74,7 @@ class _AddTaskState extends State<AddTask> {
       ),
       body: ListView.builder(
         itemCount: _list.length(),
-        itemBuilder: (context, i){
+        itemBuilder: (context, i) {
           return ListTile(
             onTap: () {
               Navigator.of(context).pop(_list.getTask(i));

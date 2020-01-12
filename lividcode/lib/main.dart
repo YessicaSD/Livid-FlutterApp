@@ -17,6 +17,14 @@ class MainPage extends StatelessWidget {
             .document('users/alex2521999@gmail.com')
             .snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: TextStyle(backgroundColor: Colors.red),
+              ),
+            );
+          }
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
@@ -54,7 +62,7 @@ class MainSreen extends StatelessWidget {
               if (!Provider.of<User>(context).toDoList.isInTaskList(value))
                 Provider.of<User>(context)
                     .toDoList
-                    .addTask(value.name, value.description);
+                    .CreateAddTask(value.name, value.description);
             }
           });
         },

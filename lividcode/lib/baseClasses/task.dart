@@ -1,11 +1,20 @@
 import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task {
   String name;
   String description;
   Float startTime, endTime, duration;
 
   Task(this.name, this.description);
+  Task.fromFirestore(DocumentSnapshot doc)
+      : name = doc.data['name'],
+        description = doc.data['description'];
+}
+
+List<Task> ToTaskList(QuerySnapshot query) {
+  return query.documents.map((doc) => Task.fromFirestore(doc)).toList();
 }
 
 class TaskList {
@@ -32,11 +41,15 @@ class TaskList {
     return false;
   }
 
-  void addTask(String name, String description) {
+  void CreateAddTask(String name, String description) {
     taskList.add(Task(name, description));
   }
 
-  void addTaskFromTask(Task t){
+  void addTask(Task newTask) {
+    taskList.add(newTask);
+  }
+
+  void addTaskFromTask(Task t) {
     taskList.add(t);
   }
 
