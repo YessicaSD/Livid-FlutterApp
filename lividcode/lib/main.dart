@@ -49,39 +49,55 @@ class MainPage extends StatelessWidget {
 class MainSreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("HomeScreen")),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: mainColor,
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-            MaterialPageRoute(
-              builder: (_) => AddTask(),
-            ),
-          )
-              .then((value) {
-            if (value != null) {
-              if (!Provider.of<User>(context).toDoList.isInTaskList(value))
-                Provider.of<User>(context)
-                    .toDoList
-                    .CreateAddTask(value.name, value.description);
-            }
-          });
-        },
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            color: Colors.grey[600], // TODO: poned el que querais
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ProfileWidget(),
-            ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("HomeScreen"),
+          bottom: TabBar(
+            tabs: <Widget>[
+              Text("To do List"),
+              Text("Done List"),
+            ],
           ),
-          Expanded(child: ToDoList()),
-        ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: mainColor,
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (_) => AddTask(),
+              ),
+            )
+                .then((value) {
+              if (value != null) {
+                if (!Provider.of<User>(context).toDoList.isInTaskList(value))
+                  Provider.of<User>(context)
+                      .toDoList
+                      .CreateAddTask(value.name, value.description);
+              }
+            });
+          },
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  color: Colors.grey[600], // TODO: poned el que querais
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ProfileWidget(),
+                  ),
+                ),
+                Expanded(child: ToDoList()),
+              ],
+            ),
+            Text("Done List"),
+          ],
+        ),
       ),
     );
   }
