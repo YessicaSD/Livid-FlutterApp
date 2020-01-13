@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/user.dart';
@@ -85,7 +87,12 @@ class MainSreen extends StatelessWidget {
   }
 }
 
-class ToDoList extends StatelessWidget {
+class ToDoList extends StatefulWidget {
+  @override
+  _ToDoListState createState() => _ToDoListState();
+}
+
+class _ToDoListState extends State<ToDoList> {
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<User>(context);
@@ -103,7 +110,40 @@ class ToDoList extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) {
-                return TaskWidget(user.toDoList.getTask(index));
+                Task actualTask = user.toDoList.getTask(index);
+                return Container(
+                  child: Card(
+                      child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          actualTask.name,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Checkbox(
+                          value: actualTask.done,
+                          onChanged: (value) {
+                            setState(() {
+                              actualTask.done = value;
+                              if (actualTask.done) {
+                                Timer(Duration(milliseconds: 500), () {
+                                  setState(() {
+                                    Provider.of<User>(context)
+                                        .toDoList
+                                        .RemoveTask(index);
+                                  });
+                                });
+                              }
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  )),
+                );
               },
               itemCount: user.toDoList.length(),
             ),
@@ -116,7 +156,8 @@ class ToDoList extends StatelessWidget {
 
 class TaskWidget extends StatefulWidget {
   final Task actualTask;
-  TaskWidget(this.actualTask);
+  final int index;
+  TaskWidget(this.actualTask, this.index);
 
   @override
   _TaskWidgetState createState() => _TaskWidgetState();
@@ -141,6 +182,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               onChanged: (value) {
                 setState(() {
                   widget.actualTask.done = value;
+                  Provider.of<User>(context).toDoList.RemoveTask(widget.index);
                 });
               },
             ),

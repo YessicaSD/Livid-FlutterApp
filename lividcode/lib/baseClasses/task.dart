@@ -49,8 +49,8 @@ class TaskList {
     taskList.add(newTask);
   }
 
-  void addTaskFromTask(Task t) {
-    taskList.add(t);
+  void RemoveTask(int index) {
+    taskList.removeAt(index);
   }
 
   Task getTask(int i) {

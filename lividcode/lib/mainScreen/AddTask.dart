@@ -67,7 +67,7 @@ class _AddTaskState extends State<AddTask> {
           )
               .then((task) {
             if (task != null) {
-              _list.addTaskFromTask(task);
+              _list.addTask(task);
             }
           });
         },
