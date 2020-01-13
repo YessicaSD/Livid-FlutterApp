@@ -84,7 +84,9 @@ class _AddTaskState extends State<AddTask> {
             );
           },
           separatorBuilder: (context, index) {
-            return Divider();
+            return Divider(
+              height: 1,
+            );
           }),
     );
   }

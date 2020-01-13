@@ -36,6 +36,8 @@ class MainPage extends StatelessWidget {
             child: MaterialApp(
               theme: ThemeData(primaryColor: Color.fromRGBO(47, 44, 66, 1.0)),
               home: MainSreen(),
+              initialRoute: '/',
+              routes: {},
             ),
           );
         });
@@ -112,19 +114,37 @@ class ToDoList extends StatelessWidget {
   }
 }
 
-class TaskWidget extends StatelessWidget {
+class TaskWidget extends StatefulWidget {
   final Task actualTask;
   TaskWidget(this.actualTask);
 
+  @override
+  _TaskWidgetState createState() => _TaskWidgetState();
+}
+
+class _TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Card(
           child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-        child: Text(
-          actualTask.name,
-          style: TextStyle(fontSize: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              widget.actualTask.name,
+              style: TextStyle(fontSize: 15),
+            ),
+            Checkbox(
+              value: widget.actualTask.done,
+              onChanged: (value) {
+                setState(() {
+                  widget.actualTask.done = value;
+                });
+              },
+            ),
+          ],
         ),
       )),
     );
