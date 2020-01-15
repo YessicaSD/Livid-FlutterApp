@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 enum statType {
@@ -62,6 +63,19 @@ class StatList {
     for (int i = 0; i < allStats.length; i++)
       auxList.add(new Stat(allStats[i], 10, statType.values[i], colors[i]));
     return StatList(auxList);
+  }
+
+  StatList.fromFirebase(CollectionReference sp) {
+    print(sp.getDocuments().then((doc) {
+      for (DocumentSnapshot docs in doc.documents) {
+        switch (docs.documentID) {
+          case 'FUN':
+            statList.add(Stat(
+                'Fun', docs.data['value'], statType.ST_FUN, Colors.yellow));
+            break;
+        }
+      }
+    }));
   }
 
   Stat getStat(int type) {

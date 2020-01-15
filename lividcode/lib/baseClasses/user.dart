@@ -14,9 +14,9 @@ class User {
   User.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
         imagePath = doc.data['imagePath'],
-        stats = StatList.statListStart(),
+        stats = StatList.fromFirebase(doc.reference.collection('Stats')),
         toDoList = TaskList.tryTaskList() {
-    doc.reference.collection('CostumTasks').getDocuments().then((val) {
+    doc.reference.collection('CustomTasks').getDocuments().then((val) {
       if (val != null) costumTasks = toTaskList(val);
     });
   }
