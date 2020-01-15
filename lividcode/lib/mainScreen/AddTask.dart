@@ -27,7 +27,7 @@ class _AddTaskState extends State<AddTask> {
     var _jsonGames = jsonDecode(data);
 
     for (var i in _jsonGames['Tasks']) {
-      _list.CreateAddTask(i['name'], i['description']);
+      _list.createAddTask(i['name'], i['description']);
     }
     if (Provider.of<User>(context).costumTasks != null) {
       for (var task in Provider.of<User>(context).costumTasks) {

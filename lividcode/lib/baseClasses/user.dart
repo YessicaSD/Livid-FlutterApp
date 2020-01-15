@@ -17,7 +17,7 @@ class User {
         stats = StatList.statListStart(),
         toDoList = TaskList.tryTaskList() {
     doc.reference.collection('CostumTasks').getDocuments().then((val) {
-      if (val != null) costumTasks = ToTaskList(val);
+      if (val != null) costumTasks = toTaskList(val);
     });
   }
 

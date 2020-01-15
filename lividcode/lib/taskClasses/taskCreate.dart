@@ -9,8 +9,8 @@ class CreateTask extends StatefulWidget {
 }
 
 class _CreateTaskState extends State<CreateTask> {
-  TextEditingController name_ctrl = new TextEditingController();
-  TextEditingController description_ctrl = new TextEditingController();
+  TextEditingController nameCtrl = new TextEditingController();
+  TextEditingController descriptionCtrl = new TextEditingController();
 
   TextEditingValue duration;
 
@@ -25,11 +25,11 @@ class _CreateTaskState extends State<CreateTask> {
           child: Column(
             children: <Widget>[
               TextField(
-                controller: name_ctrl,
+                controller: nameCtrl,
                 decoration: InputDecoration(labelText: 'Name'),
                 onSubmitted: (String value) async {
                   setState(() {
-                    name_ctrl.text = value;
+                    nameCtrl.text = value;
                   });
                   await showDialog<void>(
                     context: context,
@@ -51,7 +51,7 @@ class _CreateTaskState extends State<CreateTask> {
                 },
               ),
               TextField(
-                controller: description_ctrl,
+                controller: descriptionCtrl,
                 decoration: InputDecoration(labelText: 'Description'),
               ),
               Text('Stats'),
@@ -62,10 +62,11 @@ class _CreateTaskState extends State<CreateTask> {
         floatingActionButton: /*(name_ctrl.text.isEmpty ? Container() : */ FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            auxTask = new Task(name_ctrl.text, description_ctrl.text);
-            (auxTask.name.isEmpty
-                ? Navigator.of(context).pop(null)
-                : Navigator.of(context).pop(auxTask));
+            auxTask = new Task(nameCtrl.text, descriptionCtrl.text);
+            if (auxTask.name.isEmpty)
+              Navigator.of(context).pop(null);
+            else
+              Navigator.of(context).pop(auxTask);
           },
         ) /*)*/
         );

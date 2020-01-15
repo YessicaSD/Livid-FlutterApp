@@ -76,7 +76,7 @@ class MainSreen extends StatelessWidget {
                 if (!Provider.of<User>(context).toDoList.isInTaskList(value))
                   Provider.of<User>(context)
                       .toDoList
-                      .CreateAddTask(value.name, value.description);
+                      .createAddTask(value.name, value.description);
               }
             });
           },
@@ -149,7 +149,7 @@ class _ToDoListState extends State<ToDoList> {
                                   setState(() {
                                     Provider.of<User>(context)
                                         .toDoList
-                                        .RemoveTask(index);
+                                        .removeTask(index);
                                   });
                                 });
                               }

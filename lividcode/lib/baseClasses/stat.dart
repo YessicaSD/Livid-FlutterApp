@@ -30,7 +30,7 @@ class Stat {
             height: 5,
           ),
           Container(
-            width: 300,
+            width: 250,
             height: 5,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),

@@ -13,7 +13,7 @@ class Task {
         description = doc.data['description'];
 }
 
-List<Task> ToTaskList(QuerySnapshot query) {
+List<Task> toTaskList(QuerySnapshot query) {
   return query.documents.map((doc) => Task.fromFirestore(doc)).toList();
 }
 
@@ -41,7 +41,7 @@ class TaskList {
     return false;
   }
 
-  void CreateAddTask(String name, String description) {
+  void createAddTask(String name, String description) {
     taskList.add(Task(name, description));
   }
 
@@ -49,7 +49,7 @@ class TaskList {
     taskList.add(newTask);
   }
 
-  void RemoveTask(int index) {
+  void removeTask(int index) {
     taskList.removeAt(index);
   }
 
