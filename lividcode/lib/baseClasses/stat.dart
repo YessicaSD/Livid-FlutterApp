@@ -69,6 +69,26 @@ class StatList {
     print(sp.getDocuments().then((doc) {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
+          case 'STR':
+            statList.add(Stat(
+                'Strength', docs.data['value'], statType.ST_FUN, Colors.red));
+            break;
+          case 'STM':
+            statList.add(Stat('Stamina', docs.data['value'],
+                statType.ST_STAMINE, Colors.limeAccent[400]));
+            break;
+          case 'INT':
+            statList.add(Stat('Intelligence', docs.data['value'],
+                statType.ST_INTELLIGENCE, Colors.lightBlue));
+            break;
+          case 'SOC':
+            statList.add(Stat('Social', docs.data['value'], statType.ST_SOCIAL,
+                Colors.purple));
+            break;
+          case 'HYG':
+            statList.add(Stat('Hygiene', docs.data['value'], statType.ST_HYGINE,
+                Colors.blue));
+            break;
           case 'FUN':
             statList.add(Stat(
                 'Fun', docs.data['value'], statType.ST_FUN, Colors.yellow));
