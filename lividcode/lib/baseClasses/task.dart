@@ -11,6 +11,11 @@ class Task {
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
         description = doc.data['description'];
+
+  Map<String, dynamic> ToFirebase() => {
+        'name': name,
+        'description': description,
+      };
 }
 
 List<Task> toTaskList(QuerySnapshot query) {
