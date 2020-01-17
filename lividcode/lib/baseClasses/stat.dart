@@ -35,7 +35,7 @@ class Stat {
           LinearPercentIndicator(
               width: 109,
               lineHeight: 5,
-              percent: 0.2,
+              percent: value/maxValue,
               backgroundColor: Colors.grey[700],
               progressColor: color,),
         ],
@@ -65,8 +65,8 @@ class StatList {
     return StatList(auxList);
   }
 
-  Future<void> fromFirebase(CollectionReference sp) async {
-    print(sp.getDocuments().then((doc) {
+  Future<void> fromFirebase(CollectionReference sp) async{
+    await sp.getDocuments().then((doc) {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
           case 'STR':
@@ -95,7 +95,7 @@ class StatList {
             break;
         }
       }
-    }));
+    });
   }
 
   Stat getStat(int type) {
