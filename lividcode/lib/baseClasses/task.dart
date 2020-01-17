@@ -6,13 +6,15 @@ import 'package:lividcode/baseClasses/stat.dart';
 class Task {
   String name;
   String description;
-  Float startTime, endTime, duration;
+  Float endTime;
   bool done = false;
   DateTime dateTime;
   statType type;
   int difficult = 1;
   String id;
-  DateTime finishedTime;
+  DateTime finishedTime, startTime;
+  Duration duration;
+  bool startTimer = false;
 
   Task(this.name, this.description, this.type);
 
@@ -20,9 +22,23 @@ class Task {
       : name = doc.data['name'],
         description = doc.data['description'],
         id = doc.documentID,
-        type = statFromString(doc.data['type']) {
+        type = statFromString(doc.data['type']),
+        startTimer =
+            (doc.data['startTimer'] != null) ? doc.data['startTimer'] : false {
     if (doc.data['finishedTime'] != null) {
       finishedTime = (doc.data['finishedTime'] as Timestamp).toDate();
+    }
+    if (doc.data['startTime'] != null) {
+      startTime = (doc.data['startTime'] as Timestamp).toDate();
+    }
+    if (doc.data['durationH'] != null &&
+        doc.data['durationM'] != null &&
+        doc.data['durationS'] != null) {
+      duration = new Duration(
+        hours: doc.data['durationH'],
+        minutes: doc.data['durationM'],
+        seconds: doc.data['durationS'],
+      );
     }
   }
 
@@ -31,6 +47,11 @@ class Task {
         'description': description,
         'type': type.toString(),
         'finishedTime': finishedTime,
+        'startTimer': startTimer,
+        'startTime': startTime,
+        'durationH': duration.inHours,
+        'durationM': duration.inMinutes,
+        'durationS': duration.inSeconds,
       };
 
   String get finishedDate =>
