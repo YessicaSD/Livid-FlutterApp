@@ -70,8 +70,14 @@ class MainSreen extends StatelessWidget {
           title: Text("HomeScreen"),
           bottom: TabBar(
             tabs: <Widget>[
-              Text("To do List"),
-              Text("Done List"),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("To do List"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Done List"),
+              ),
             ],
           ),
         ),
@@ -104,13 +110,15 @@ class MainSreen extends StatelessWidget {
             Column(
               children: <Widget>[
                 Container(
-                  color: Colors.grey[600],
+                  color: Colors.deepPurple[200],
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ProfileWidget(),
                   ),
                 ),
                 Expanded(child: ToDoList()),
+                Divider(color: Colors.grey[700]),
+                Text('Hola'),
               ],
             ),
             Text("Done List"),
