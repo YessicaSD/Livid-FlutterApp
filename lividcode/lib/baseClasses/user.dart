@@ -14,18 +14,19 @@ class User {
   User.defaultStats()
       : name = 'name',
         imagePath = 'null',
-        stats = StatList.statListStart(),
+        stats = StatList(List<Stat>()),
         toDoList = TaskList.startTaskList();
 
   Future<void> fromFirestore(DocumentSnapshot doc) async {
     name = doc.data['name'];
     imagePath = doc.data['imagePath'];
-    stats = StatList.fromFirebase(doc.reference.collection('Stats'));
-    doc.reference
-        .collection('CustomTasks')
-        .getDocuments()
-        .then((QuerySnapshot val) {
-      if (val != null) costumTasks = toTaskList(val);
+    await stats.fromFirebase(doc.reference.collection('Stats')).then((onValue) {
+      doc.reference
+          .collection('CustomTasks')
+          .getDocuments()
+          .then((QuerySnapshot val) {
+        if (val != null) costumTasks = toTaskList(val);
+      });
     });
     print('ya he acabado eh');
   }
