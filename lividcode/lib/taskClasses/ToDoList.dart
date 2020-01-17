@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
@@ -67,6 +65,24 @@ class _ToDoListState extends State<ToDoList> {
                             child: Text('Done'),
                             onPressed: () {
                               actualTask.finishedTime = Timestamp.now();
+                              Firestore.instance
+                                  .collection('users')
+                                  .document(user.idUser)
+                                  .collection('Stats')
+                                  .document(statToString(actualTask.type))
+                                  .get()
+                                  .then((doc) {
+                                int val = doc.data['value'];
+                                if (doc.data['value'] + actualTask.difficult >
+                                    doc.data['maxValue'])
+                                  val = doc.data['maxValue'];
+                                else
+                                  val += actualTask.difficult;
+                                doc.reference.updateData({
+                                  'value':
+                                      doc.data['value'] + actualTask.difficult
+                                });
+                              });
                               Firestore.instance
                                   .collection(
                                       'users/' + user.idUser + '/DoneTasks')

@@ -10,7 +10,7 @@ class Task {
   bool done = false;
   DateTime dateTime;
   statType type;
-  int difficult = 0;
+  int difficult = 1;
   String id;
   Timestamp finishedTime;
 
