@@ -119,7 +119,6 @@ class MainSreen extends StatelessWidget {
                 ),
                 Expanded(child: ToDoList()),
                 Divider(color: Colors.grey[700]),
-                Text('Hola'),
               ],
             ),
             Text("Done List"),
