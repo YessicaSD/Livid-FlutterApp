@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
 import 'package:lividcode/baseClasses/stat.dart';
+import 'package:lividcode/mainScreen/EditTask.dart';
 
 class ToDoList extends StatefulWidget {
   User user;
@@ -52,40 +53,34 @@ class _ToDoListState extends State<ToDoList> {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       Task actualTask = _list.getTask(index);
-                      return Container(
-                        child: Card(
-                            child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                actualTask.name,
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              FlatButton(
-                                shape: StadiumBorder(),
-                                color: Theme.of(context).buttonColor,
-                                child: Text('Done'),
-                                onPressed: () {
-                                  actualTask.finishedTime = Timestamp.now();
-                                  Firestore.instance
-                                      .collection(
-                                          'users/' + user.idUser + '/DoneTasks')
-                                      .add(actualTask.toFirebase())
-                                      .then((onValue) {});
-                                  Firestore.instance
-                                      .document('users/' +
-                                          user.idUser +
-                                          '/DoingTasks/' +
-                                          actualTask.id)
-                                      .delete();
-                                },
-                              ),
-                            ],
+                      return Card(
+                        child: ListTile(
+                          title: Text(actualTask.name),
+                          subtitle: Text(statToString(actualTask.type)),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      EditTask(actualTask, user.idUser))),
+                          trailing: FlatButton(
+                            shape: StadiumBorder(),
+                            color: Theme.of(context).buttonColor,
+                            child: Text('Done'),
+                            onPressed: () {
+                              actualTask.finishedTime = Timestamp.now();
+                              Firestore.instance
+                                  .collection(
+                                      'users/' + user.idUser + '/DoneTasks')
+                                  .add(actualTask.toFirebase())
+                                  .then((onValue) {});
+                              Firestore.instance
+                                  .document('users/' +
+                                      user.idUser +
+                                      '/DoingTasks/' +
+                                      actualTask.id)
+                                  .delete();
+                            },
                           ),
-                        )),
+                        ),
                       );
                     },
                     itemCount: _list.length(),
