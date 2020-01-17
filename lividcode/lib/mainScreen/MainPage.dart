@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("HomeScreen"),
+          title: Text(widget.user.name),
           bottom: TabBar(
             tabs: <Widget>[
               Padding(
@@ -97,10 +97,10 @@ class _MainScreenState extends State<MainScreen> {
             )
                 .then((value) {
               if (value != null) {
-                Task newTask = new Task(value.name, value.description, value.type);
+                Task newTask = new Task(value.name, value.description);
                 Firestore.instance
                     .collection('users/' + widget.user.idUser + '/DoingTasks')
-                    .add(newTask.toFirebase());
+                    .add(newTask.ToFirebase());
               }
             });
           },
@@ -131,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
   Future saveCustomTask(String path, Task new_task) async {
     await Firestore.instance
         .collection('users/$path/CustomTasks')
-        .add(new_task.toFirebase());
+        .add(new_task.ToFirebase());
   }
 }
 
