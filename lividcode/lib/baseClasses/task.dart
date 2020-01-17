@@ -8,11 +8,13 @@ class Task {
   Float startTime, endTime, duration;
   bool done = false;
   DateTime dateTime;
+  String id;
 
   Task(this.name, this.description);
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
-        description = doc.data['description'];
+        description = doc.data['description'],
+        id = doc.documentID;
 
   Map<String, dynamic> ToFirebase() => {
         'name': name,

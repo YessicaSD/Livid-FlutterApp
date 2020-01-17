@@ -30,7 +30,7 @@ class _ToDoListState extends State<ToDoList> {
           List<DocumentSnapshot> docs = snapshot.data.documents;
           _list.taskList.clear();
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description']);
+            _list.addTask(Task.fromFirestore(task));
           }
 
           return Container(
@@ -64,18 +64,20 @@ class _ToDoListState extends State<ToDoList> {
                                 style: TextStyle(fontSize: 15),
                               ),
                               Checkbox(
-                                value: actualTask.done,
-                                onChanged: (value) {
-                                  setState(() {
-                                    actualTask.done = value;
-                                    if (actualTask.done) {
-                                      Timer(Duration(milliseconds: 500), () {
-                                        setState(() {});
-                                      });
-                                    }
-                                  });
-                                },
-                              ),
+                                  value: actualTask.done,
+                                  onChanged: (value) {
+                                    Firestore.instance
+                                        .collection('users/' +
+                                            user.idUser +
+                                            '/DoneTasks')
+                                        .add(actualTask.ToFirebase());
+                                    Firestore.instance
+                                        .document('users/' +
+                                            user.idUser +
+                                            '/DoingTasks/' +
+                                            actualTask.id)
+                                        .delete();
+                                  }),
                             ],
                           ),
                         )),
