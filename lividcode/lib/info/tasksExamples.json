@@ -2,18 +2,21 @@
     "Tasks": [
         {
             "name": "Dormir",
-            "description": "A la cama o te chupo el pito",
-            "difficult": 3
+            "description": "8 horas de sueño",
+			"type": "STM",
+            "value": 1
         },
         {
             "name": "Comer saludable",
             "description": "Helthy food boy, a contaminar menos",
-            "difficult": 3
+			"type": "STR",
+            "value": 3
         },
         {
             "name": "Example",
             "description": "Description",
-            "difficult": 3
+			"type": "FUN",
+            "value": 3
         }
     ]
 }

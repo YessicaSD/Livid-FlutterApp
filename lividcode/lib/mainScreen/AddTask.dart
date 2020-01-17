@@ -30,28 +30,11 @@ class _AddTaskState extends State<AddTask> {
   Future<void> _loadExamples() async {
     String data = await DefaultAssetBundle.of(context)
         .loadString('lib/info/tasksExamples.json');
-    var _jsonGames = jsonDecode(data);
+    var _jsonTasks = jsonDecode(data);
 
-    for (var i in _jsonGames['Tasks']) {
+    for (var i in _jsonTasks['Tasks']) {
       costumTasksList.createAddTask(
-          i['name'], i['description'], statFromString(i['type']));
-    }
-    // if (widget.user.costumTasks != null) {
-    //   for (var task in widget.user.costumTasks) {
-    //     _list.addTask(task);
-    //   }
-    // }
-
-    try {
-      /*Directory dir = await getApplicationDocumentsDirectory();
-      File file = File('${dir.path}/fav.json');
-      String fileContents = await file.readAsString();
-      dynamic jsonFav = jsonDecode(fileContents);
-      for(var i in jsonFav){
-        _favourites[i['name']] = i['fav'];
-      }*/
-    } catch (e) {
-      print(e.toString());
+          i['name'], i['description'], statFromString(i['type']), i['value']);
     }
 
     super.setState(() {});
@@ -110,13 +93,17 @@ class _AddTaskState extends State<AddTask> {
             body: ListView.separated(
                 itemCount: _list.length(),
                 itemBuilder: (context, i) {
+                  Task task = _list.getTask(i);
                   return ListTile(
-                    onTap: () {
-                      Navigator.of(context).pop(_list.getTask(i));
-                    },
-                    title: Text(_list.getTask(i).name),
-                    subtitle: Text(_list.getTask(i).description),
-                  );
+                      onTap: () {
+                        Navigator.of(context).pop(_list.getTask(i));
+                      },
+                      title: Text(task.name),
+                      subtitle: Text(task.description),
+                      trailing: Text(statToString(task.type) +
+                          ((task.difficult >= 0) ? '+' : '') +
+                          '${task.difficult}'),
+                      onLongPress: () => _buildShowDialog(context, i));
                 },
                 separatorBuilder: (context, index) {
                   return Divider(
@@ -125,5 +112,36 @@ class _AddTaskState extends State<AddTask> {
                 }),
           );
         });
+  }
+
+  Future _buildShowDialog(BuildContext context, int i) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete Task'),
+          content: Text('Are you sure you want to delete this task?'),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () {
+                  Firestore.instance
+                      .document('users/' +
+                          widget.user.idUser +
+                          '/CustomTasks/' +
+                          _list.getTask(i).id)
+                      .delete();
+                  Navigator.of(context).pop();
+                },
+                child: Text('DELETE', style: TextStyle(color: Colors.red))),
+            FlatButton(
+              child: Text('CLOSE'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 }
