@@ -97,10 +97,10 @@ class _MainScreenState extends State<MainScreen> {
             )
                 .then((value) {
               if (value != null) {
-                Task newTask = new Task(value.name, value.description);
+                Task newTask = Task(value.name, value.description, value.type);
                 Firestore.instance
                     .collection('users/' + widget.user.idUser + '/DoingTasks')
-                    .add(newTask.ToFirebase());
+                    .add(newTask.toFirebase());
               }
             });
           },
@@ -131,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
   Future saveCustomTask(String path, Task new_task) async {
     await Firestore.instance
         .collection('users/$path/CustomTasks')
-        .add(new_task.ToFirebase());
+        .add(new_task.toFirebase());
   }
 }
 

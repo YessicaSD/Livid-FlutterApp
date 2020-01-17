@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 
 class ToDoList extends StatefulWidget {
   User user;
@@ -30,7 +31,7 @@ class _ToDoListState extends State<ToDoList> {
           List<DocumentSnapshot> docs = snapshot.data.documents;
           _list.taskList.clear();
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description']);
+            _list.createAddTask(task['name'], task['description'], statFromString(task['type']));
           }
 
           return Container(
