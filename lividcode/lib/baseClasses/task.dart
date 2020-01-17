@@ -14,7 +14,7 @@ class Task {
       : name = doc.data['name'],
         description = doc.data['description'];
 
-  Map<String, dynamic> toFirebase() => {
+  Map<String, dynamic> ToFirebase() => {
         'name': name,
         'description': description,
       };

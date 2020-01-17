@@ -8,7 +8,7 @@ import 'package:lividcode/taskClasses/taskCreate.dart';
 import 'package:lividcode/baseClasses/user.dart';
 
 class AddTask extends StatefulWidget {
-  final User user;
+  User user;
 
   AddTask(this.user);
 
@@ -101,7 +101,7 @@ class _AddTaskState extends State<AddTask> {
                     Task newTask = task;
                     Firestore.instance
                         .collection('users/$userID/CustomTasks')
-                        .add(newTask.toFirebase());
+                        .add(newTask.ToFirebase());
                   }
                 });
               },
