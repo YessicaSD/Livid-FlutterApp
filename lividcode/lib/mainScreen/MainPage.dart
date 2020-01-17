@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
@@ -99,8 +100,11 @@ class MainSreen extends StatelessWidget {
               if (value != null) {
                 if (!user.toDoList.isInTaskList(value)) {
                   Task new_task = new Task(value.name, value.description);
-                  String path = Provider.of<User>(context).idUser;
-                  saveCustomTask(path, new_task);
+                  Firestore.instance
+                      .collection('users/' +
+                          Provider.of<User>(context).idUser +
+                          '/DoingTasks')
+                      .add(new_task.ToFirebase());
                 }
               }
             });
