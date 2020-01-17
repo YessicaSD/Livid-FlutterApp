@@ -85,9 +85,7 @@ class _ToDoListState extends State<ToDoList> {
                             Expanded(
                               child: ListTile(
                                 title: Text(actualTask.name),
-                                subtitle: Text(statToString(actualTask.type) +
-                                    ((actualTask.difficult >= 0) ? '+' : '') +
-                                    '${actualTask.difficult}'),
+                                subtitle: Text(statToString(actualTask.type)),
                                 onTap: () => Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (_) =>
@@ -112,7 +110,10 @@ class _ToDoListState extends State<ToDoList> {
                                         val = doc.data['maxValue'];
                                       else
                                         val += actualTask.difficult;
-                                      doc.reference.updateData({'value': val});
+                                      doc.reference.updateData({
+                                        'value': doc.data['value'] +
+                                            actualTask.difficult
+                                      });
                                     });
                                     Firestore.instance
                                         .collection('users/' +

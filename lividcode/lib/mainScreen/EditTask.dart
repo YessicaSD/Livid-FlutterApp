@@ -9,13 +9,11 @@ class EditTask extends StatelessWidget {
   String user;
   TextEditingController name;
   TextEditingController description;
-  TextEditingController dif;
   statType type;
 
   EditTask(this.task, this.user)
       : name = TextEditingController(text: task.name),
         description = TextEditingController(text: task.description),
-        dif = TextEditingController(text: task.difficult.toString()),
         type = task.type;
 
   @override
@@ -51,18 +49,7 @@ class EditTask extends StatelessWidget {
               controller: description,
               maxLines: 4,
             ),
-            Row(
-              children: <Widget>[
-                ComboWidget(type, user, task.id),
-                Flexible(
-                  child: TextField(
-                    controller: dif,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(hintText: 'dificulty'),
-                  ),
-                )
-              ],
-            ),
+            ComboWidget(type, user, task.id),
             SizedBox(
               height: 50,
             ),
@@ -71,7 +58,7 @@ class EditTask extends StatelessWidget {
                 Firestore.instance
                     .document('users/$user/DoingTasks/${task.id}')
                     .setData(
-                        Task(name.text, description.text, type, int.parse(dif.text)).toFirebase());
+                        Task(name.text, description.text, type).toFirebase());
                 Navigator.of(context).pop();
               },
               child: Text(

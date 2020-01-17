@@ -16,13 +16,12 @@ class Task {
   Duration duration;
   bool startTimer = false;
 
-  Task(this.name, this.description, this.type, this.difficult);
+  Task(this.name, this.description, this.type);
 
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
         description = doc.data['description'],
         id = doc.documentID,
-        difficult = (doc.data['value'] != null) ? doc.data['value'] : 1,
         type = statFromString(doc.data['type']),
         startTimer =
             (doc.data['startTimer'] != null) ? doc.data['startTimer'] : false {
@@ -46,8 +45,7 @@ class Task {
   Map<String, dynamic> toFirebase() => {
         'name': name,
         'description': description,
-        'type': statToString(type),
-        'value': difficult,
+        'type': type.toString(),
         'finishedTime': finishedTime,
         'startTimer': startTimer,
         'startTime': startTime,
@@ -74,6 +72,13 @@ class TaskList {
     return TaskList.fromList(List<Task>());
   }
 
+  factory TaskList.tryTaskList() {
+    List<Task> auxList = List<Task>();
+    auxList.add(Task("Hamburguesa", "La madre que me parió", statType.ST_FUN));
+    auxList.add(Task("Tennis", "La madre ha sido asesinado", statType.ST_FUN));
+    return TaskList.fromList(auxList);
+  }
+
   bool isInTaskList(Task t) {
     for (var i in taskList) {
       if (i.name == t.name && i.description == t.description) return true;
@@ -81,8 +86,8 @@ class TaskList {
     return false;
   }
 
-  void createAddTask(String name, String description, statType type, int dif) {
-    taskList.add(Task(name, description, type, dif));
+  void createAddTask(String name, String description, statType type) {
+    taskList.add(Task(name, description, type));
   }
 
   void addTask(Task newTask) {

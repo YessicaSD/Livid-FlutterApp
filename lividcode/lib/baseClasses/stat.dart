@@ -182,7 +182,7 @@ class StatList {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
           case 'STR':
-            statList.add(Stat('Strength', docs.data['value'], statType.ST_STRENGTH,
+            statList.add(Stat('Strength', docs.data['value'], statType.ST_FUN,
                 Colors.red[300], docs.data['maxValue']));
             break;
           case 'STM':
