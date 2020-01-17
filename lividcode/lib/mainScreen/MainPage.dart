@@ -7,7 +7,6 @@ import 'package:lividcode/info/defs.dart';
 import 'package:lividcode/mainScreen/AddTask.dart';
 import 'package:lividcode/mainScreen/profile.dart';
 import 'package:lividcode/taskClasses/ToDoList.dart';
-import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   final String id;
@@ -52,16 +51,20 @@ class _MainPageState extends State<MainPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return Provider<User>.value(
-              value: user,
-              child: MainSreen(),
-            );
+            return MainScreen(user);
           }
         });
   }
 }
 
-class MainSreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  User user;
+  MainScreen(this.user);
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -89,19 +92,15 @@ class MainSreen extends StatelessWidget {
             Navigator.of(context)
                 .push(
               MaterialPageRoute(
-                builder: (_) => AddTask(Provider.of<User>(context)),
+                builder: (_) => AddTask(widget.user),
               ),
             )
                 .then((value) {
               if (value != null) {
-                if (!Provider.of<User>(context).toDoList.isInTaskList(value)) {
-                  Task new_task = new Task(value.name, value.description);
-                  Firestore.instance
-                      .collection('users/' +
-                          Provider.of<User>(context).idUser +
-                          '/DoingTasks')
-                      .add(new_task.ToFirebase());
-                }
+                Task newTask = new Task(value.name, value.description, value.type);
+                Firestore.instance
+                    .collection('users/' + widget.user.idUser + '/DoingTasks')
+                    .add(newTask.toFirebase());
               }
             });
           },
@@ -114,14 +113,14 @@ class MainSreen extends StatelessWidget {
                   color: Colors.deepPurple[200],
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: ProfileWidget(),
+                    child: ProfileWidget(widget.user),
                   ),
                 ),
-                Expanded(child: ToDoList()),
+                Expanded(child: ToDoList(widget.user)),
                 Divider(color: Colors.grey[700]),
               ],
             ),
-            DoneList(Provider.of<User>(context)),
+            DoneList(widget.user),
           ],
         ),
         backgroundColor: Colors.deepPurple[100],
@@ -132,7 +131,7 @@ class MainSreen extends StatelessWidget {
   Future saveCustomTask(String path, Task new_task) async {
     await Firestore.instance
         .collection('users/$path/CustomTasks')
-        .add(new_task.ToFirebase());
+        .add(new_task.toFirebase());
   }
 }
 
@@ -145,8 +144,16 @@ class DoneList extends StatelessWidget {
     return ListView.separated(
       itemCount: user.doneList.length(),
       separatorBuilder: (context, index) => Divider(),
-      itemBuilder: (context, index){
-        return ListTile(title: Text(user.doneList.getTask(index).name),);
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            child: ListTile(
+              title: Text(user.doneList.getTask(index).name),
+              subtitle: Text(user.doneList.getTask(index).duration.toString()),
+            ),
+          ),
+        );
       },
     );
   }
