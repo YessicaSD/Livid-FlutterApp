@@ -127,6 +127,7 @@ class MainSreen extends StatelessWidget {
             Text("Done List"),
           ],
         ),
+        backgroundColor: Colors.deepPurple[100],
       ),
     );
   }
