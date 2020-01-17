@@ -31,23 +31,23 @@ class _CreateTaskState extends State<CreateTask> {
                   setState(() {
                     nameCtrl.text = value;
                   });
-                  await showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Thanks!'),
-                        content: Text('You typed "$value".'),
-                        actions: <Widget>[
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  // await showDialog<void>(
+                  //   context: context,
+                  //   builder: (BuildContext context) {
+                  //     // return AlertDialog(
+                  //     //   title: const Text('Thanks!'),
+                  //     //   content: Text('You typed "$value".'),
+                  //     //   actions: <Widget>[
+                  //     //     FlatButton(
+                  //     //       onPressed: () {
+                  //     //         Navigator.pop(context);
+                  //     //       },
+                  //     //       child: const Text('OK'),
+                  //     //     ),
+                  //     //   ],
+                  //     // );
+                  //   },
+                  // );
                 },
               ),
               TextField(

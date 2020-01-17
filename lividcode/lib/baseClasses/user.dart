@@ -3,16 +3,18 @@ import 'package:lividcode/baseClasses/stat.dart';
 import 'package:lividcode/baseClasses/task.dart';
 
 class User {
+  String idUser;
   String name;
   String imagePath;
   StatList stats;
   TaskList toDoList;
   List<Task> costumTasks;
 
-  User(this.name, this.imagePath, this.stats, this.toDoList);
+  User(this.idUser, this.name, this.imagePath, this.stats, this.toDoList);
 
   User.fromFirestore(DocumentSnapshot doc)
-      : name = doc.data['name'],
+      : idUser = doc.documentID,
+        name = doc.data['name'],
         imagePath = doc.data['imagePath'],
         stats = StatList.fromFirebase(doc.reference.collection('Stats')),
         toDoList = TaskList.tryTaskList() {
@@ -22,8 +24,8 @@ class User {
   }
 
   factory User.userStart() {
-    return new User(
-        "Alex", "njdns", StatList.statListStart(), TaskList.tryTaskList());
+    return new User("alex2521999@gmail.com", "Alex", "njdns",
+        StatList.statListStart(), TaskList.tryTaskList());
   }
 
   Stat getStat(int type) {
