@@ -35,22 +35,17 @@ class User {
         if (val != null)
           for (var d in val.documents) {
             toDoList.createAddTask(d.data['name'], d.data['description'],
-                statFromString(d.data['type']));
+                statFromString(d.data['type']), d.data['value']);
           }
       });
       doc.reference.collection('DoneTasks').getDocuments().then((val) {
         if (val != null)
           for (var d in val.documents) {
             doneList.createAddTask(d.data['name'], d.data['description'],
-                statFromString(d.data['type']));
+                statFromString(d.data['type']), d.data['value']);
           }
       });
     });
-  }
-
-  factory User.userStart() {
-    return new User("alex2521999@gmail.com", "Alex", "njdns",
-        StatList.statListStart(), TaskList.tryTaskList());
   }
 
   Stat getStat(int type) {

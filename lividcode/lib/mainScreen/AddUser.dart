@@ -29,7 +29,7 @@ class AddUser extends StatelessWidget {
                       .document('${email.text}')
                       .collection('Stats')
                       .document(statToString(stats))
-                      .setData({'maxValue': 50, 'value': 50});
+                      .setData({'maxValue': 50, 'value': 10});
               }
               Navigator.of(context).pop();
             });
