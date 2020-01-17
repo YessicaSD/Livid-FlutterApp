@@ -66,7 +66,7 @@ class _ToDoListState extends State<ToDoList> {
                             color: Theme.of(context).buttonColor,
                             child: Text('Done'),
                             onPressed: () {
-                              actualTask.finishedTime = Timestamp.now();
+                              actualTask.finishedTime = DateTime.now();
                               Firestore.instance
                                   .collection(
                                       'users/' + user.idUser + '/DoneTasks')
