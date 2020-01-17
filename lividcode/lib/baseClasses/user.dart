@@ -11,14 +11,23 @@ class User {
 
   User(this.name, this.imagePath, this.stats, this.toDoList);
 
-  User.fromFirestore(DocumentSnapshot doc)
-      : name = doc.data['name'],
-        imagePath = doc.data['imagePath'],
-        stats = StatList.fromFirebase(doc.reference.collection('Stats')),
-        toDoList = TaskList.tryTaskList() {
-    doc.reference.collection('CustomTasks').getDocuments().then((val) {
+  User.defaultStats()
+      : name = 'name',
+        imagePath = 'null',
+        stats = StatList.statListStart(),
+        toDoList = TaskList.startTaskList();
+
+  Future<void> fromFirestore(DocumentSnapshot doc) async {
+    name = doc.data['name'];
+    imagePath = doc.data['imagePath'];
+    stats = StatList.fromFirebase(doc.reference.collection('Stats'));
+    doc.reference
+        .collection('CustomTasks')
+        .getDocuments()
+        .then((QuerySnapshot val) {
       if (val != null) costumTasks = toTaskList(val);
     });
+    print('ya he acabado eh');
   }
 
   factory User.userStart() {
