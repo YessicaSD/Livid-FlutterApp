@@ -39,6 +39,7 @@ String statToString(statType t) {
 }
 
 statType statFromString(String s) {
+  if (s == null) return statType.ST_MAX;
   switch (s) {
     case 'STR':
       return statType.ST_FUN;

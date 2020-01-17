@@ -63,7 +63,7 @@ class _CreateTaskState extends State<CreateTask> {
         floatingActionButton: /*(name_ctrl.text.isEmpty ? Container() : */ FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            auxTask = new Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
+            auxTask = Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
             if (auxTask.name.isEmpty)
               Navigator.of(context).pop(null);
             else

@@ -34,14 +34,16 @@ class User {
       doc.reference.collection('DoingTasks').getDocuments().then((val) {
         if (val != null)
           for (var d in val.documents) {
-            toDoList.createAddTask(d.data['name'], d.data['description'], statFromString(d.data['type']));
+            toDoList.createAddTask(d.data['name'], d.data['description'],
+                statFromString(d.data['type']));
           }
       });
-      doc.reference.collection('DoneTasks').getDocuments().then((val){
-        if(val != null)
-        for(var d in val.documents){
-          doneList.createAddTask(d.data['name'], d.data['description'],statFromString(d.data['type']));
-        }
+      doc.reference.collection('DoneTasks').getDocuments().then((val) {
+        if (val != null)
+          for (var d in val.documents) {
+            doneList.createAddTask(d.data['name'], d.data['description'],
+                statFromString(d.data['type']));
+          }
       });
     });
   }

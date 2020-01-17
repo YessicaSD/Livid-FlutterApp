@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:lividcode/mainScreen/AddUser.dart';
 import 'package:lividcode/mainScreen/MainPage.dart';
 
 class SelectUser extends StatelessWidget {
@@ -8,6 +9,10 @@ class SelectUser extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Select User'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddUser())),
       ),
       body: StreamBuilder(
         stream: Firestore.instance.collection('users').snapshots(),
