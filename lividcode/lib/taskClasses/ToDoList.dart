@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 
 class ToDoList extends StatefulWidget {
   User user;
@@ -70,7 +71,7 @@ class _ToDoListState extends State<ToDoList> {
                                         .collection('users/' +
                                             user.idUser +
                                             '/DoneTasks')
-                                        .add(actualTask.ToFirebase());
+                                        .add(actualTask.toFirebase());
                                     Firestore.instance
                                         .document('users/' +
                                             user.idUser +

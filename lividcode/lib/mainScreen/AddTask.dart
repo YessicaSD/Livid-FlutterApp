@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/info/defs.dart';
 import 'package:lividcode/taskClasses/taskCreate.dart';
 import 'package:lividcode/baseClasses/user.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 
 class AddTask extends StatefulWidget {
   User user;
@@ -33,7 +33,7 @@ class _AddTaskState extends State<AddTask> {
     var _jsonGames = jsonDecode(data);
 
     for (var i in _jsonGames['Tasks']) {
-      costumTasksList.createAddTask(i['name'], i['description']);
+      costumTasksList.createAddTask(i['name'], i['description'], statFromString(i['type']));
     }
     // if (widget.user.costumTasks != null) {
     //   for (var task in widget.user.costumTasks) {
@@ -78,7 +78,7 @@ class _AddTaskState extends State<AddTask> {
           _list.taskList.clear();
           _list.taskList = new List<Task>.from(costumTasksList.taskList);
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description']);
+            _list.createAddTask(task['name'], task['description'], statFromString(task['type']));
           }
 
           return Scaffold(
@@ -101,7 +101,7 @@ class _AddTaskState extends State<AddTask> {
                     Task newTask = task;
                     Firestore.instance
                         .collection('users/$userID/CustomTasks')
-                        .add(newTask.ToFirebase());
+                        .add(newTask.toFirebase());
                   }
                 });
               },

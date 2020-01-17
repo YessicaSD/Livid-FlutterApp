@@ -12,6 +12,57 @@ enum statType {
   ST_MAX,
 }
 
+String statToString(statType t) {
+  switch (t) {
+    case statType.ST_STRENGTH:
+      return 'STR';
+      break;
+    case statType.ST_INTELLIGENCE:
+      return 'INT';
+      break;
+    case statType.ST_STAMINE:
+      return 'STM';
+      break;
+    case statType.ST_FUN:
+      return 'FUN';
+      break;
+    case statType.ST_SOCIAL:
+      return 'SOC';
+      break;
+    case statType.ST_HYGINE:
+      return 'HYG';
+      break;
+    default:
+      break;
+  }
+  return 'invalid';
+}
+
+statType statFromString(String s) {
+  if (s == null) return statType.ST_MAX;
+  switch (s) {
+    case 'STR':
+      return statType.ST_FUN;
+      break;
+    case 'STM':
+      return statType.ST_STAMINE;
+      break;
+    case 'INT':
+      return statType.ST_INTELLIGENCE;
+      break;
+    case 'SOC':
+      return statType.ST_SOCIAL;
+      break;
+    case 'HYG':
+      return statType.ST_HYGINE;
+      break;
+    case 'FUN':
+      return statType.ST_FUN;
+      break;
+  }
+  return statType.ST_MAX;
+}
+
 class Stat {
   String name;
   int value;
@@ -33,11 +84,12 @@ class Stat {
             height: 5,
           ),
           LinearPercentIndicator(
-              width: 109,
-              lineHeight: 5,
-              percent: value/maxValue,
-              backgroundColor: Colors.deepPurple[400],
-              progressColor: color,),
+            width: 109,
+            lineHeight: 5,
+            percent: value / maxValue,
+            backgroundColor: Colors.deepPurple[400],
+            progressColor: color,
+          ),
         ],
       ),
     );
@@ -65,21 +117,25 @@ class StatList {
     return StatList(auxList);
   }
 
-  Future<void> fromFirebase(CollectionReference sp) async{
+  Future<void> fromFirebase(CollectionReference sp) async {
     await sp.getDocuments().then((doc) {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
           case 'STR':
             statList.add(Stat('Strength', docs.data['value'], statType.ST_FUN,
-                Colors.red[300],docs.data['maxValue']));
+                Colors.red[300], docs.data['maxValue']));
             break;
           case 'STM':
             statList.add(Stat('Stamina', docs.data['value'],
                 statType.ST_STAMINE, Colors.lime[300], docs.data['maxValue']));
             break;
           case 'INT':
-            statList.add(Stat('Intelligence', docs.data['value'],
-                statType.ST_INTELLIGENCE, Colors.blue[200], docs.data['maxValue']));
+            statList.add(Stat(
+                'Intelligence',
+                docs.data['value'],
+                statType.ST_INTELLIGENCE,
+                Colors.blue[200],
+                docs.data['maxValue']));
             break;
           case 'SOC':
             statList.add(Stat('Social', docs.data['value'], statType.ST_SOCIAL,

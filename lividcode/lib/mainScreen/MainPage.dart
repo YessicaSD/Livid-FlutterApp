@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 import 'package:lividcode/info/defs.dart';
 import 'package:lividcode/mainScreen/AddTask.dart';
 import 'package:lividcode/mainScreen/profile.dart';
@@ -97,10 +97,10 @@ class _MainScreenState extends State<MainScreen> {
             )
                 .then((value) {
               if (value != null) {
-                Task newTask = new Task(value.name, value.description);
+                Task newTask = Task(value.name, value.description, value.type);
                 Firestore.instance
                     .collection('users/' + widget.user.idUser + '/DoingTasks')
-                    .add(newTask.ToFirebase());
+                    .add(newTask.toFirebase());
               }
             });
           },
@@ -131,7 +131,7 @@ class _MainScreenState extends State<MainScreen> {
   Future saveCustomTask(String path, Task new_task) async {
     await Firestore.instance
         .collection('users/$path/CustomTasks')
-        .add(new_task.ToFirebase());
+        .add(new_task.toFirebase());
   }
 }
 
@@ -150,7 +150,8 @@ class DoneList extends StatelessWidget {
           child: Card(
             child: ListTile(
               title: Text(user.doneList.getTask(index).name),
-              subtitle: Text(user.doneList.getTask(index).duration.toString()),
+              subtitle: Text(statToString(user.doneList.getTask(index).type)),
+              trailing: Text(user.doneList.getTask(index).duration.toString()),
             ),
           ),
         );

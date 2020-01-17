@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/extraWidgets/combo.dart';
 
@@ -62,7 +63,7 @@ class _CreateTaskState extends State<CreateTask> {
         floatingActionButton: /*(name_ctrl.text.isEmpty ? Container() : */ FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            auxTask = new Task(nameCtrl.text, descriptionCtrl.text);
+            auxTask = Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
             if (auxTask.name.isEmpty)
               Navigator.of(context).pop(null);
             else

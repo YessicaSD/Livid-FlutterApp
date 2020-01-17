@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lividcode/baseClasses/stat.dart';
 
 class Task {
   String name;
@@ -8,15 +9,19 @@ class Task {
   Float startTime, endTime, duration;
   bool done = false;
   DateTime dateTime;
+  statType type;
+  int difficult = 0;
   String id;
 
-  Task(this.name, this.description);
+  Task(this.name, this.description, this.type);
+
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
         description = doc.data['description'],
-        id = doc.documentID;
+        id = doc.documentID,
+        type = statFromString(doc.data['type']);
 
-  Map<String, dynamic> ToFirebase() => {
+  Map<String, dynamic> toFirebase() => {
         'name': name,
         'description': description,
       };
@@ -38,8 +43,8 @@ class TaskList {
 
   factory TaskList.tryTaskList() {
     List<Task> auxList = List<Task>();
-    auxList.add(Task("Hamburguesa", "La madre que me parió"));
-    auxList.add(Task("Tennis", "La madre ha sido asesinado"));
+    auxList.add(Task("Hamburguesa", "La madre que me parió", statType.ST_FUN));
+    auxList.add(Task("Tennis", "La madre ha sido asesinado", statType.ST_FUN));
     return TaskList.fromList(auxList);
   }
 
@@ -50,8 +55,8 @@ class TaskList {
     return false;
   }
 
-  void createAddTask(String name, String description) {
-    taskList.add(Task(name, description));
+  void createAddTask(String name, String description, statType type) {
+    taskList.add(Task(name, description, type));
   }
 
   void addTask(Task newTask) {
