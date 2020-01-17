@@ -33,11 +33,11 @@ class EditTask extends StatelessWidget {
               controller: description,
               maxLines: 4,
             ),
-            ComboWidget(type, user, null),
+            ComboWidget(type, user, task.id),
             SizedBox(height: 50,),
             RaisedButton(
               onPressed: () {
-                return Firestore.instance.collection('users').document(user).collection('DoingTasks').document(task.name).delete().then((val){
+                return Firestore.instance.collection('users').document(user).collection('DoingTasks').document(task.id).delete().then((val){
                   Navigator.of(context).pop();
                 });
               },

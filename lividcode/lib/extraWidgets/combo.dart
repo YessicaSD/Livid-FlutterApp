@@ -49,7 +49,7 @@ class _ComboWidgetState extends State<ComboWidget> {
             .document(widget.user)
             .collection('DoingTasks')
             .document(widget.id)
-            .setData({'type': statToString(widget.type)});
+            .updateData({'type': statToString(widget.type)});
     });
   }
 
