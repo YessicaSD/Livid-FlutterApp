@@ -20,18 +20,18 @@ class Stat {
 
   Widget printStat() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.all(5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            children: <Widget>[Text(name + ":"), Text(value.toString())],
+            children: <Widget>[Text(name + ": "), Text(value.toString())],
           ),
           SizedBox(
             height: 5,
           ),
           Container(
-            width: 250,
+            width: 125,
             height: 5,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
@@ -53,9 +53,9 @@ class StatList {
     List<Stat> auxList = new List<Stat>();
     List<Color> colors = new List<Color>();
     colors.length = statType.ST_MAX.index;
-    colors[statType.ST_FUN.index] = Colors.yellow;
+    colors[statType.ST_FUN.index] = Colors.yellow[300];
     colors[statType.ST_HYGINE.index] = Colors.blue;
-    colors[statType.ST_INTELLIGENCE.index] = Colors.lightBlue;
+    colors[statType.ST_INTELLIGENCE.index] = Colors.orange[400];
     colors[statType.ST_SOCIAL.index] = Colors.purple;
     colors[statType.ST_STAMINE.index] = Colors.limeAccent[400];
     colors[statType.ST_STRENGTH.index] = Colors.red;
@@ -65,33 +65,33 @@ class StatList {
     return StatList(auxList);
   }
 
-  StatList.fromFirebase(CollectionReference sp) {
+  Future<void> fromFirebase(CollectionReference sp) async{
     print(sp.getDocuments().then((doc) {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
           case 'STR':
             statList.add(Stat(
-                'Strength', docs.data['value'], statType.ST_FUN, Colors.red));
+                'Strength', docs.data['value'], statType.ST_FUN, Colors.red[300]));
             break;
           case 'STM':
             statList.add(Stat('Stamina', docs.data['value'],
-                statType.ST_STAMINE, Colors.limeAccent[400]));
+                statType.ST_STAMINE, Colors.lime[300]));
             break;
           case 'INT':
             statList.add(Stat('Intelligence', docs.data['value'],
-                statType.ST_INTELLIGENCE, Colors.lightBlue));
+                statType.ST_INTELLIGENCE, Colors.blue[200]));
             break;
           case 'SOC':
             statList.add(Stat('Social', docs.data['value'], statType.ST_SOCIAL,
-                Colors.purple));
+                Colors.purple[100]));
             break;
           case 'HYG':
             statList.add(Stat('Hygiene', docs.data['value'], statType.ST_HYGINE,
-                Colors.blue));
+                Colors.orange[300]));
             break;
           case 'FUN':
             statList.add(Stat(
-                'Fun', docs.data['value'], statType.ST_FUN, Colors.yellow));
+                'Fun', docs.data['value'], statType.ST_FUN, Colors.yellow[300]));
             break;
         }
       }

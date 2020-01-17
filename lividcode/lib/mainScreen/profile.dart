@@ -11,29 +11,32 @@ class ProfileWidget extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Center(
-              child: InkWell(
-            onTap: () {},
-            child: Container(
-              child: Image(
-                fit: BoxFit.fill,
-                image: AssetImage('lib/assets/avatar.png'),
-              ),
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.blue,
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(user.imagePath),
+                    )),
               ),
             ),
-          )),
+          ),
           SizedBox(
             width: 20,
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              for (int i = 0; i < user.stats.statList.length; ++i)
-                user.getStat(i).printStat(),
+              for (int i = 0; i <= (user.stats.statList.length * 0.5) + 1; i += 2)
+                Row(children: <Widget>[
+                  user.getStat(i).printStat(),
+                  user.getStat(i + 1).printStat()
+                ]),
+
             ],
           ),
         ],
