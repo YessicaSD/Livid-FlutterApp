@@ -64,7 +64,7 @@ class _ToDoListState extends State<ToDoList> {
                             color: Theme.of(context).buttonColor,
                             child: Text('Done'),
                             onPressed: () {
-                              actualTask.finishedTime = Timestamp.now();
+                              actualTask.finishedTime = DateTime.now();
                               Firestore.instance
                                   .collection('users')
                                   .document(user.idUser)
@@ -96,6 +96,36 @@ class _ToDoListState extends State<ToDoList> {
                                   .delete();
                             },
                           ),
+                          onLongPress: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text('Delete Task'),
+                                    content: Text(
+                                        'Are you sure you want to delete this task?'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                          onPressed: () {
+                                            Firestore.instance
+                                                .document('users/' +
+                                                    user.idUser +
+                                                    '/DoingTasks/' +
+                                                    actualTask.id)
+                                                .delete();
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('DELETE',style: TextStyle(color: Colors.red))),
+                                      FlatButton(
+                                        child: Text('CLOSE'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
                         ),
                       );
                     },
