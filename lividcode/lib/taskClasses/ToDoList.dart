@@ -54,32 +54,39 @@ class _ToDoListState extends State<ToDoList> {
                     itemBuilder: (context, index) {
                       Task actualTask = _list.getTask(index);
                       return Card(
-                        child: ListTile(
-                          title: Text(actualTask.name),
-                          subtitle: Text(statToString(actualTask.type)),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      EditTask(actualTask, user.idUser))),
-                          trailing: FlatButton(
-                            shape: StadiumBorder(),
-                            color: Theme.of(context).buttonColor,
-                            child: Text('Done'),
-                            onPressed: () {
-                              actualTask.finishedTime = DateTime.now();
-                              Firestore.instance
-                                  .collection(
-                                      'users/' + user.idUser + '/DoneTasks')
-                                  .add(actualTask.toFirebase())
-                                  .then((onValue) {});
-                              Firestore.instance
-                                  .document('users/' +
-                                      user.idUser +
-                                      '/DoingTasks/' +
-                                      actualTask.id)
-                                  .delete();
-                            },
-                          ),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ListTile(
+                                title: Text(actualTask.name),
+                                subtitle: Text(statToString(actualTask.type)),
+                                onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            EditTask(actualTask, user.idUser))),
+                                trailing: FlatButton(
+                                  shape: StadiumBorder(),
+                                  color: Theme.of(context).buttonColor,
+                                  child: Text('Done'),
+                                  onPressed: () {
+                                    actualTask.finishedTime = DateTime.now();
+                                    Firestore.instance
+                                        .collection('users/' +
+                                            user.idUser +
+                                            '/DoneTasks')
+                                        .add(actualTask.toFirebase())
+                                        .then((onValue) {});
+                                    Firestore.instance
+                                        .document('users/' +
+                                            user.idUser +
+                                            '/DoingTasks/' +
+                                            actualTask.id)
+                                        .delete();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },

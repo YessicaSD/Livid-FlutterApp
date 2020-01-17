@@ -33,7 +33,8 @@ class _AddTaskState extends State<AddTask> {
     var _jsonGames = jsonDecode(data);
 
     for (var i in _jsonGames['Tasks']) {
-      costumTasksList.createAddTask(i['name'], i['description'], statFromString(i['type']));
+      costumTasksList.createAddTask(
+          i['name'], i['description'], statFromString(i['type']));
     }
     // if (widget.user.costumTasks != null) {
     //   for (var task in widget.user.costumTasks) {
@@ -78,7 +79,7 @@ class _AddTaskState extends State<AddTask> {
           _list.taskList.clear();
           _list.taskList = new List<Task>.from(costumTasksList.taskList);
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description'], statFromString(task['type']));
+            _list.addTask(Task.fromFirestore(task));
           }
 
           return Scaffold(
