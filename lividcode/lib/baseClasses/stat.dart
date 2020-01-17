@@ -12,6 +12,57 @@ enum statType {
   ST_MAX,
 }
 
+statType statFromFullName(String s){
+  if (s == null) return statType.ST_MAX;
+  switch (s) {
+    case 'Strength':
+      return statType.ST_STRENGTH;
+      break;
+    case 'Stamine':
+      return statType.ST_STAMINE;
+      break;
+    case 'Intelligence':
+      return statType.ST_INTELLIGENCE;
+      break;
+    case 'Social':
+      return statType.ST_SOCIAL;
+      break;
+    case 'Hygine':
+      return statType.ST_HYGINE;
+      break;
+    case 'Fun':
+      return statType.ST_FUN;
+      break;
+  }
+  return statType.ST_MAX;
+}
+
+String statToFullName(statType t) {
+  switch (t) {
+    case statType.ST_STRENGTH:
+      return 'Strength';
+      break;
+    case statType.ST_INTELLIGENCE:
+      return 'Intelligence';
+      break;
+    case statType.ST_STAMINE:
+      return 'Stamine';
+      break;
+    case statType.ST_FUN:
+      return 'Fun';
+      break;
+    case statType.ST_SOCIAL:
+      return 'Social';
+      break;
+    case statType.ST_HYGINE:
+      return 'Hygine';
+      break;
+    default:
+      break;
+  }
+  return 'invalid';
+}
+
 String statToString(statType t) {
   switch (t) {
     case statType.ST_STRENGTH:
@@ -42,7 +93,7 @@ statType statFromString(String s) {
   if (s == null) return statType.ST_MAX;
   switch (s) {
     case 'STR':
-      return statType.ST_FUN;
+      return statType.ST_STRENGTH;
       break;
     case 'STM':
       return statType.ST_STAMINE;

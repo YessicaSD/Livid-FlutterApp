@@ -10,8 +10,9 @@ class CreateTask extends StatefulWidget {
 }
 
 class _CreateTaskState extends State<CreateTask> {
-  TextEditingController nameCtrl = new TextEditingController();
-  TextEditingController descriptionCtrl = new TextEditingController();
+  TextEditingController nameCtrl = TextEditingController();
+  TextEditingController descriptionCtrl = TextEditingController();
+  statType type;
 
   TextEditingValue duration;
 
@@ -56,14 +57,15 @@ class _CreateTaskState extends State<CreateTask> {
                 decoration: InputDecoration(labelText: 'Description'),
               ),
               Text('Stats'),
-              ComboWidget(),
+              ComboWidget(type, null, null),
             ],
           ),
         ),
         floatingActionButton: /*(name_ctrl.text.isEmpty ? Container() : */ FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            auxTask = Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
+            auxTask =
+                Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
             if (auxTask.name.isEmpty)
               Navigator.of(context).pop(null);
             else

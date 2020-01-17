@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
 import 'package:lividcode/baseClasses/stat.dart';
+import 'package:lividcode/mainScreen/EditTask.dart';
 
 class ToDoList extends StatefulWidget {
   User user;
@@ -31,7 +32,8 @@ class _ToDoListState extends State<ToDoList> {
           List<DocumentSnapshot> docs = snapshot.data.documents;
           _list.taskList.clear();
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description'], statFromString(task['type']));
+            _list.createAddTask(task['name'], task['description'],
+                statFromString(task['type']));
           }
 
           return Container(
@@ -52,34 +54,21 @@ class _ToDoListState extends State<ToDoList> {
                   child: ListView.builder(
                     itemBuilder: (context, index) {
                       Task actualTask = _list.getTask(index);
-                      return Container(
-                        child: Card(
-                            child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                actualTask.name,
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              Checkbox(
-                                value: actualTask.done,
-                                onChanged: (value) {
-                                  setState(() {
-                                    actualTask.done = value;
-                                    if (actualTask.done) {
-                                      Timer(Duration(milliseconds: 500), () {
-                                        setState(() {});
-                                      });
-                                    }
-                                  });
-                                },
-                              ),
-                            ],
+                      return Card(
+                        child: ListTile(
+                          title: Text(actualTask.name),
+                          subtitle: Text(statToString(actualTask.type)),
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => EditTask(actualTask, user.idUser))),
+                          trailing: Checkbox(
+                            value: actualTask.done,
+                            onChanged: (value) {
+                              setState(() {
+                                actualTask.done = value;
+                              });
+                            },
                           ),
-                        )),
+                        ),
                       );
                     },
                     itemCount: _list.length(),
