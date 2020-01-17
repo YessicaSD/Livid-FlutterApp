@@ -36,7 +36,7 @@ class Stat {
               width: 109,
               lineHeight: 5,
               percent: value/maxValue,
-              backgroundColor: Colors.grey[700],
+              backgroundColor: Colors.deepPurple[400],
               progressColor: color,),
         ],
       ),
