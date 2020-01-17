@@ -14,9 +14,14 @@ class ProfileWidget extends StatelessWidget {
             child: InkWell(
               onTap: () {},
               child: Container(
-                child: Image.network(user.imagePath),
                 width: 50,
                 height: 50,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(user.imagePath),
+                    )),
               ),
             ),
           ),
