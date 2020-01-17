@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/info/defs.dart';
@@ -18,7 +19,9 @@ class AddTask extends StatefulWidget {
 
 class _AddTaskState extends State<AddTask> {
   TaskList _list = TaskList();
+  TaskList costumTasksList = TaskList();
 
+  bool loaded = false;
   @override
   void initState() {
     _loadExamples();
@@ -31,13 +34,13 @@ class _AddTaskState extends State<AddTask> {
     var _jsonGames = jsonDecode(data);
 
     for (var i in _jsonGames['Tasks']) {
-      _list.createAddTask(i['name'], i['description']);
+      costumTasksList.createAddTask(i['name'], i['description']);
     }
-    if (widget.user.costumTasks != null) {
-      for (var task in widget.user.costumTasks) {
-        _list.addTask(task);
-      }
-    }
+    // if (widget.user.costumTasks != null) {
+    //   for (var task in widget.user.costumTasks) {
+    //     _list.addTask(task);
+    //   }
+    // }
 
     try {
       /*Directory dir = await getApplicationDocumentsDirectory();
@@ -55,43 +58,75 @@ class _AddTaskState extends State<AddTask> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Task'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.edit),
-        backgroundColor: mainColor,
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-            MaterialPageRoute(
-              builder: (_) => CreateTask(),
+    return StreamBuilder(
+        stream: Firestore.instance
+            .collection('users/' + widget.user.idUser + '/CustomTasks')
+            .snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: TextStyle(backgroundColor: Colors.red),
+              ),
+            );
+          }
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          List<DocumentSnapshot> docs = snapshot.data.documents;
+          _list.taskList.clear();
+          _list.taskList = new List<Task>.from(costumTasksList.taskList);
+          for (var task in docs) {
+            _list.createAddTask(task['name'], task['description']);
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Add Task'),
             ),
-          )
-              .then((task) {
-            if (task != null) {
-              _list.addTask(task);
-            }
-          });
-        },
-      ),
-      body: ListView.separated(
-          itemCount: _list.length(),
-          itemBuilder: (context, i) {
-            return ListTile(
-              onTap: () {
-                Navigator.of(context).pop(_list.getTask(i));
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.edit),
+              backgroundColor: mainColor,
+              onPressed: () {
+                Navigator.of(context)
+                    .push(
+                  MaterialPageRoute(
+                    builder: (_) => CreateTask(),
+                  ),
+                )
+                    .then((task) {
+                  if (task != null) {
+                    String userID = widget.user.idUser;
+                    Task newTask = task;
+                    Firestore.instance
+                        .collection('users/$userID/CustomTasks')
+                        .add(newTask.ToFirebase());
+
+                    //_list.addTask(newTask);
+                    //Provider.of<User>(context).costumTasks.add(newTask);
+                  }
+                });
               },
-              title: Text(_list.getTask(i).name),
-              subtitle: Text(_list.getTask(i).description),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return Divider(
-              height: 1,
-            );
-          }),
-    );
+            ),
+            body: ListView.separated(
+                itemCount: _list.length(),
+                itemBuilder: (context, i) {
+                  return ListTile(
+                    onTap: () {
+                      Navigator.of(context).pop(_list.getTask(i));
+                    },
+                    title: Text(_list.getTask(i).name),
+                    subtitle: Text(_list.getTask(i).description),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider(
+                    height: 1,
+                  );
+                }),
+          );
+        });
   }
 }
