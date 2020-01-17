@@ -64,21 +64,25 @@ class _ToDoListState extends State<ToDoList> {
                                 actualTask.name,
                                 style: TextStyle(fontSize: 15),
                               ),
-                              Checkbox(
-                                  value: actualTask.done,
-                                  onChanged: (value) {
-                                    Firestore.instance
-                                        .collection('users/' +
-                                            user.idUser +
-                                            '/DoneTasks')
-                                        .add(actualTask.toFirebase());
-                                    Firestore.instance
-                                        .document('users/' +
-                                            user.idUser +
-                                            '/DoingTasks/' +
-                                            actualTask.id)
-                                        .delete();
-                                  }),
+                              FlatButton(
+                                shape: StadiumBorder(),
+                                color: Theme.of(context).buttonColor,
+                                child: Text('Done'),
+                                onPressed: () {
+                                  actualTask.finishedTime = Timestamp.now();
+                                  Firestore.instance
+                                      .collection(
+                                          'users/' + user.idUser + '/DoneTasks')
+                                      .add(actualTask.toFirebase())
+                                      .then((onValue) {});
+                                  Firestore.instance
+                                      .document('users/' +
+                                          user.idUser +
+                                          '/DoingTasks/' +
+                                          actualTask.id)
+                                      .delete();
+                                },
+                              ),
                             ],
                           ),
                         )),

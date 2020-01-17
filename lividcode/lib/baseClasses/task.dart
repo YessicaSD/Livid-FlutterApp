@@ -12,6 +12,7 @@ class Task {
   statType type;
   int difficult = 0;
   String id;
+  Timestamp finishedTime;
 
   Task(this.name, this.description, this.type);
 
@@ -19,12 +20,14 @@ class Task {
       : name = doc.data['name'],
         description = doc.data['description'],
         id = doc.documentID,
-        type = statFromString(doc.data['type']);
+        type = statFromString(doc.data['type']),
+        finishedTime = doc.data['finishedTime'];
 
   Map<String, dynamic> toFirebase() => {
         'name': name,
         'description': description,
         'type': type.toString(),
+        'finishedTime': finishedTime,
       };
 }
 
