@@ -31,12 +31,11 @@ class ProfileWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              for (int i = 0; i <= (user.stats.statList.length * 0.5) + 1; i += 2)
+              for (int i = 0, count = 0; i < 3; i++)
                 Row(children: <Widget>[
-                  user.getStat(i).printStat(),
-                  user.getStat(i + 1).printStat()
+                  for (int j = 0; j < 2; j++, count++)
+                    user.getStat(count).printStat(),
                 ]),
-
             ],
           ),
         ],
