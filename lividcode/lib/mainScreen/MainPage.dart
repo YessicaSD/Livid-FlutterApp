@@ -137,25 +137,44 @@ class _MainScreenState extends State<MainScreen> {
 
 class DoneList extends StatelessWidget {
   final User user;
+  TaskList _list = TaskList();
   DoneList(this.user);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      itemCount: user.doneList.length(),
-      separatorBuilder: (context, index) => Divider(),
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            child: ListTile(
-              title: Text(user.doneList.getTask(index).name),
-              subtitle: Text(statToString(user.doneList.getTask(index).type)),
-              trailing: Text(user.doneList.getTask(index).duration.toString()),
-            ),
-          ),
-        );
-      },
-    );
+    return StreamBuilder(
+        stream: Firestore.instance
+            .collection('users/' + user.idUser + '/DoneTasks')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          List<DocumentSnapshot> docs = snapshot.data.documents;
+          _list.taskList.clear();
+          for (var task in docs) {
+            _list.addTask(Task.fromFirestore(task));
+          }
+
+          return ListView.separated(
+            itemCount: _list.length(),
+            separatorBuilder: (context, index) => Divider(),
+            itemBuilder: (context, index) {
+              Task currentTask = _list.getTask(index);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: ListTile(
+                    title: Text(currentTask.name),
+                    subtitle: Text(statToString(currentTask.type)),
+                    trailing: Text(currentTask.duration.toString()),
+                  ),
+                ),
+              );
+            },
+          );
+        });
   }
 }
