@@ -13,6 +13,7 @@ class _CreateTaskState extends State<CreateTask> {
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController descriptionCtrl = TextEditingController();
   statType type;
+  String errorText = "";
 
   TextEditingValue duration;
 
@@ -58,12 +59,22 @@ class _CreateTaskState extends State<CreateTask> {
               ),
               Text('Stats'),
               ComboWidget(type, null, null),
+              Text(errorText, style: TextStyle(color: Colors.red))
             ],
           ),
         ),
         floatingActionButton: /*(name_ctrl.text.isEmpty ? Container() : */ FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
+            if (descriptionCtrl.text == "" &&
+                nameCtrl.text == "" &&
+                type == null) {
+                  setState(() {
+                     errorText = 'Error! Some parameter is empty!';
+                  });
+              return;
+            }
+
             auxTask =
                 Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
             if (auxTask.name.isEmpty)

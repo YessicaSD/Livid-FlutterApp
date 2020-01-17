@@ -152,6 +152,15 @@ class StatList {
 
   StatList(this.statList);
 
+  setStat(String stat, int value){
+    statType toChange = statFromString(stat);
+    for(var s in statList){
+      if(toChange == s.type){
+        s.value = value;
+      }
+    }
+  }
+
   factory StatList.statListStart() {
     List<Stat> auxList = new List<Stat>();
     List<Color> colors = new List<Color>();
