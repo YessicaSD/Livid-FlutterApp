@@ -37,7 +37,9 @@ class DoneList extends StatelessWidget {
                 child: Card(
                   child: ListTile(
                     title: Text(currentTask.name),
-                    subtitle: Text(statToString(currentTask.type)),
+                    subtitle: Text(statToString(currentTask.type) +
+                              ((currentTask.difficult >= 0) ? '+' : '') +
+                              '${currentTask.difficult}'),
                     trailing: Text(currentTask.finishedDate),
                   ),
                 ),

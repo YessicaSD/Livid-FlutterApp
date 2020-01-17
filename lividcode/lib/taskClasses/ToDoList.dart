@@ -54,7 +54,9 @@ class _ToDoListState extends State<ToDoList> {
                       return Card(
                         child: ListTile(
                           title: Text(actualTask.name),
-                          subtitle: Text(statToString(actualTask.type)),
+                          subtitle: Text(statToString(actualTask.type) +
+                              ((actualTask.difficult >= 0) ? '+' : '') +
+                              '${actualTask.difficult}'),
                           onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (_) =>
@@ -80,7 +82,7 @@ class _ToDoListState extends State<ToDoList> {
                                   val += actualTask.difficult;
                                 doc.reference.updateData({
                                   'value':
-                                      doc.data['value'] + actualTask.difficult
+                                      val
                                 });
                               });
                               Firestore.instance

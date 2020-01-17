@@ -4,19 +4,19 @@
             "name": "Dormir",
             "description": "8 horas de sueño",
 			"type": "STM",
-            "difficult": 1
+            "value": 1
         },
         {
             "name": "Comer saludable",
             "description": "Helthy food boy, a contaminar menos",
 			"type": "STR",
-            "difficult": 3
+            "value": 3
         },
         {
             "name": "Example",
             "description": "Description",
 			"type": "FUN",
-            "difficult": 3
+            "value": 3
         }
     ]
 }

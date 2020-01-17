@@ -98,7 +98,7 @@ class _MainScreenState extends State<MainScreen> {
             )
                 .then((value) {
               if (value != null) {
-                Task newTask = Task(value.name, value.description, value.type);
+                Task newTask = Task(value.name, value.description, value.type, value.difficult);
                 Firestore.instance
                     .collection('users/' + widget.user.idUser + '/DoingTasks')
                     .add(newTask.toFirebase());

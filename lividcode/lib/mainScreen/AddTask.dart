@@ -34,7 +34,7 @@ class _AddTaskState extends State<AddTask> {
 
     for (var i in _jsonTasks['Tasks']) {
       costumTasksList.createAddTask(
-          i['name'], i['description'], statFromString(i['type']));
+          i['name'], i['description'], statFromString(i['type']), i['value']);
     }
 
     super.setState(() {});
@@ -93,13 +93,16 @@ class _AddTaskState extends State<AddTask> {
             body: ListView.separated(
                 itemCount: _list.length(),
                 itemBuilder: (context, i) {
+                  Task task = _list.getTask(i);
                   return ListTile(
                       onTap: () {
                         Navigator.of(context).pop(_list.getTask(i));
                       },
-                      title: Text(_list.getTask(i).name),
-                      subtitle: Text(_list.getTask(i).description),
-                      trailing: Text(statToString(_list.getTask(i).type)),
+                      title: Text(task.name),
+                      subtitle: Text(task.description),
+                      trailing: Text(statToString(task.type) +
+                          ((task.difficult >= 0) ? '+' : '') +
+                          '${task.difficult}'),
                       onLongPress: () => _buildShowDialog(context, i));
                 },
                 separatorBuilder: (context, index) {

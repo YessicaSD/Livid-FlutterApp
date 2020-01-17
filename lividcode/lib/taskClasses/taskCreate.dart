@@ -12,6 +12,7 @@ class CreateTask extends StatefulWidget {
 class _CreateTaskState extends State<CreateTask> {
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController descriptionCtrl = TextEditingController();
+  TextEditingController number = TextEditingController();
   statType type = statType.ST_FUN;
   String errorText = "";
 
@@ -41,7 +42,12 @@ class _CreateTaskState extends State<CreateTask> {
               decoration: InputDecoration(labelText: 'Description'),
             ),
             Text('Stats'),
-            ComboWidget(type, null, null),
+            Row(
+              children: <Widget>[
+                ComboWidget(type, null, null),
+                Flexible(child: TextField(controller: number,keyboardType: TextInputType.number,decoration: InputDecoration(hintText: 'difficulty'),))
+              ],
+            ),
             Text(errorText, style: TextStyle(color: Colors.red))
           ],
         ),
@@ -58,7 +64,7 @@ class _CreateTaskState extends State<CreateTask> {
             return;
           }
 
-          auxTask = Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN);
+          auxTask = Task(nameCtrl.text, descriptionCtrl.text, statType.ST_FUN, int.parse(number.text));
           if (auxTask.name.isEmpty)
             Navigator.of(context).pop(null);
           else
