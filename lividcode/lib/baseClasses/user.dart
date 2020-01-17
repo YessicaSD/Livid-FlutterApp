@@ -23,7 +23,7 @@ class User {
     name = doc.data['name'];
     imagePath = doc.data['imagePath'];
     stats = StatList.fromFirebase(doc.reference.collection('Stats'));
-    doc.reference
+    await doc.reference
         .collection('CustomTasks')
         .getDocuments()
         .then((QuerySnapshot val) {
