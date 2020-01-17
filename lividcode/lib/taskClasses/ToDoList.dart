@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lividcode/baseClasses/task.dart';
 import 'package:lividcode/baseClasses/user.dart';
-import 'package:provider/provider.dart';
 
 class ToDoList extends StatefulWidget {
+  User user;
+  ToDoList(this.user);
   @override
   _ToDoListState createState() => _ToDoListState();
 }
@@ -13,13 +14,12 @@ class ToDoList extends StatefulWidget {
 class _ToDoListState extends State<ToDoList> {
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<User>(context);
-
+    final User user = widget.user;
     return Container(
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 8.0,8.0,0.0),
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0.0),
             child: Text(
               "To do list",
               style: TextStyle(fontSize: 17),
@@ -52,11 +52,7 @@ class _ToDoListState extends State<ToDoList> {
                               actualTask.done = value;
                               if (actualTask.done) {
                                 Timer(Duration(milliseconds: 500), () {
-                                  setState(() {
-                                    Provider.of<User>(context)
-                                        .toDoList
-                                        .removeTask(index);
-                                  });
+                                  setState(() {});
                                 });
                               }
                             });

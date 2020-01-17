@@ -102,9 +102,6 @@ class _AddTaskState extends State<AddTask> {
                     Firestore.instance
                         .collection('users/$userID/CustomTasks')
                         .add(newTask.toFirebase());
-
-                    //_list.addTask(newTask);
-                    //Provider.of<User>(context).costumTasks.add(newTask);
                   }
                 });
               },

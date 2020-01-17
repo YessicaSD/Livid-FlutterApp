@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:lividcode/baseClasses/user.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
+  User user;
+  ProfileWidget(this.user);
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    final User user = Provider.of<User>(context);
-
+    final User user = widget.user;
     return Container(
       child: Row(
         children: <Widget>[
