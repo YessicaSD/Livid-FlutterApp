@@ -20,7 +20,8 @@ class Task {
       : name = doc.data['name'],
         description = doc.data['description'],
         id = doc.documentID,
-        type = statFromString(doc.data['type']) {
+        type = statFromString(doc.data['type']),
+        difficult = (doc.data['value'] != null) ? doc.data['value'] : 1 {
     if (doc.data['finishedTime'] != null) {
       finishedTime = (doc.data['finishedTime'] as Timestamp).toDate();
     }
@@ -31,6 +32,8 @@ class Task {
         'description': description,
         'type': type.toString(),
         'finishedTime': finishedTime,
+        'type': statToString(type),
+        'value': difficult,
       };
 
   String get finishedDate =>
