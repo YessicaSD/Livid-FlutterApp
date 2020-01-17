@@ -13,6 +13,7 @@ class Task {
   int difficult = 0;
   
   Task(this.name, this.description, this.type);
+  
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
         description = doc.data['description'],
