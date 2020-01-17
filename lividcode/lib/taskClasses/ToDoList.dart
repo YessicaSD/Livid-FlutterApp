@@ -19,11 +19,15 @@ class _ToDoListState extends State<ToDoList> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(8.0, 8.0,8.0,0.0),
             child: Text(
               "To do list",
               style: TextStyle(fontSize: 17),
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Divider(color: Colors.grey[700]),
           ),
           Expanded(
             child: ListView.builder(

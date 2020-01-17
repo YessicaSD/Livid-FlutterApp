@@ -7,6 +7,8 @@ class Task {
   String description;
   Float startTime, endTime, duration;
   bool done = false;
+  DateTime dateTime;
+  
   Task(this.name, this.description);
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
