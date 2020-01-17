@@ -26,45 +26,41 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: Firestore.instance.document('users/' + widget.id).snapshots(),
-      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              snapshot.error.toString(),
-              style: TextStyle(backgroundColor: Colors.red),
-            ),
-          );
-        }
-        if (!snapshot.hasData) {
-          return Center(child: CircularProgressIndicator());
-        }
-        if (!loaded) {
-          DocumentSnapshot doc = snapshot.data;
-          user = User.defaultStats();
-          user.fromFirestore(doc).then((val) {
-            setState(() {
-              loaded = true;
+        stream: Firestore.instance.document('users/' + widget.id).snapshots(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                snapshot.error.toString(),
+                style: TextStyle(backgroundColor: Colors.red),
+              ),
+            );
+          }
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (!loaded) {
+            DocumentSnapshot doc = snapshot.data;
+            user = User.defaultStats();
+            user.fromFirestore(doc).then((val) {
+              setState(() {
+                loaded = true;
+              });
             });
-          });
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          return Provider<User>.value(
-            value: user,
-            child: MainSreen(user),
-          );
-        }
-      },
-    );
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Provider<User>.value(
+              value: user,
+              child: MainSreen(),
+            );
+          }
+        });
   }
 }
 
 class MainSreen extends StatelessWidget {
-  final User user;
-  MainSreen(this.user);
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -97,7 +93,10 @@ class MainSreen extends StatelessWidget {
             )
                 .then((value) {
               if (value != null) {
-                if (!user.toDoList.isInTaskList(value)) {
+                if (!Provider.of<User>(context).toDoList.isInTaskList(value)) {
+                  // Provider.of<User>(context)
+                  //     .toDoList
+                  //     .createAddTask(value.name, value.description);
                   Task new_task = new Task(value.name, value.description);
                   String path = Provider.of<User>(context).idUser;
                   saveCustomTask(path, new_task);
@@ -118,8 +117,6 @@ class MainSreen extends StatelessWidget {
                   ),
                 ),
                 Expanded(child: ToDoList()),
-                Divider(color: Colors.grey[700]),
-                Text('Hola'),
               ],
             ),
             Text("Done List"),

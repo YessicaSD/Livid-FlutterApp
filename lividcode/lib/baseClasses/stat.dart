@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 enum statType {
   ST_STRENGTH,
@@ -14,9 +15,10 @@ enum statType {
 class Stat {
   String name;
   int value;
+  int maxValue;
   statType type;
   Color color;
-  Stat(this.name, this.value, this.type, this.color);
+  Stat(this.name, this.value, this.type, this.color, this.maxValue);
 
   Widget printStat() {
     return Padding(
@@ -30,14 +32,12 @@ class Stat {
           SizedBox(
             height: 5,
           ),
-          Container(
-            width: 125,
-            height: 5,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: color,
-            ),
-          )
+          LinearPercentIndicator(
+              width: 109,
+              lineHeight: 5,
+              percent: 0.2,
+              backgroundColor: Colors.grey[700],
+              progressColor: color,),
         ],
       ),
     );
@@ -61,37 +61,37 @@ class StatList {
     colors[statType.ST_STRENGTH.index] = Colors.red;
 
     for (int i = 0; i < allStats.length; i++)
-      auxList.add(new Stat(allStats[i], 10, statType.values[i], colors[i]));
+      auxList.add(new Stat(allStats[i], 10, statType.values[i], colors[i], 20));
     return StatList(auxList);
   }
 
-  Future<void> fromFirebase(CollectionReference sp) async{
+  Future<void> fromFirebase(CollectionReference sp) async {
     print(sp.getDocuments().then((doc) {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
           case 'STR':
-            statList.add(Stat(
-                'Strength', docs.data['value'], statType.ST_FUN, Colors.red[300]));
+            statList.add(Stat('Strength', docs.data['value'], statType.ST_FUN,
+                Colors.red[300],docs.data['maxValue']));
             break;
           case 'STM':
             statList.add(Stat('Stamina', docs.data['value'],
-                statType.ST_STAMINE, Colors.lime[300]));
+                statType.ST_STAMINE, Colors.lime[300], docs.data['maxValue']));
             break;
           case 'INT':
             statList.add(Stat('Intelligence', docs.data['value'],
-                statType.ST_INTELLIGENCE, Colors.blue[200]));
+                statType.ST_INTELLIGENCE, Colors.blue[200], docs.data['maxValue']));
             break;
           case 'SOC':
             statList.add(Stat('Social', docs.data['value'], statType.ST_SOCIAL,
-                Colors.purple[100]));
+                Colors.purple[100], docs.data['maxValue']));
             break;
           case 'HYG':
             statList.add(Stat('Hygiene', docs.data['value'], statType.ST_HYGINE,
-                Colors.orange[300]));
+                Colors.orange[300], docs.data['maxValue']));
             break;
           case 'FUN':
-            statList.add(Stat(
-                'Fun', docs.data['value'], statType.ST_FUN, Colors.yellow[300]));
+            statList.add(Stat('Fun', docs.data['value'], statType.ST_FUN,
+                Colors.yellow[300], docs.data['maxValue']));
             break;
         }
       }
