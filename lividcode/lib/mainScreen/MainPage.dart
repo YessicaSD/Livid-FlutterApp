@@ -8,14 +8,25 @@ import 'package:lividcode/mainScreen/profile.dart';
 import 'package:lividcode/taskClasses/ToDoList.dart';
 import 'package:provider/provider.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   final String id;
   MainPage(this.id);
 
   @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  User user;
+  bool loaded = false;
+  _MainPageState()
+      : user = null,
+        loaded = false;
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Firestore.instance.document('users/' + id).snapshots(),
+        stream: Firestore.instance.document('users/' + widget.id).snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -28,13 +39,23 @@ class MainPage extends StatelessWidget {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
-          DocumentSnapshot doc = snapshot.data;
-          // User user = User.userStart();
-          User user = User.fromFirestore(doc);
-          return Provider<User>.value(
-            value: user,
-            child: MainSreen(),
-          );
+          if (!loaded) {
+            DocumentSnapshot doc = snapshot.data;
+            user = User.defaultStats();
+            user.fromFirestore(doc).then((val) {
+              setState(() {
+                loaded = true;
+              });
+            });
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Provider<User>.value(
+              value: user,
+              child: MainSreen(),
+            );
+          }
         });
   }
 }
@@ -83,7 +104,7 @@ class MainSreen extends StatelessWidget {
             Column(
               children: <Widget>[
                 Container(
-                  color: Colors.grey[600], // TODO: poned el que querais
+                  color: Colors.grey[600],
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ProfileWidget(),
