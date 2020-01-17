@@ -11,12 +11,14 @@ class Task {
   DateTime dateTime;
   statType type;
   int difficult = 0;
-  
+  String id;
+
   Task(this.name, this.description, this.type);
-  
+
   Task.fromFirestore(DocumentSnapshot doc)
       : name = doc.data['name'],
         description = doc.data['description'],
+        id = doc.documentID,
         type = statFromString(doc.data['type']);
 
   Map<String, dynamic> toFirebase() => {

@@ -32,8 +32,7 @@ class _ToDoListState extends State<ToDoList> {
           List<DocumentSnapshot> docs = snapshot.data.documents;
           _list.taskList.clear();
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description'],
-                statFromString(task['type']));
+            _list.addTask(Task.fromFirestore(task));
           }
 
           return Container(
@@ -64,7 +63,17 @@ class _ToDoListState extends State<ToDoList> {
                             value: actualTask.done,
                             onChanged: (value) {
                               setState(() {
-                                actualTask.done = value;
+                                Firestore.instance
+                                        .collection('users/' +
+                                            user.idUser +
+                                            '/DoneTasks')
+                                        .add(actualTask.toFirebase());
+                                    Firestore.instance
+                                        .document('users/' +
+                                            user.idUser +
+                                            '/DoingTasks/' +
+                                            actualTask.id)
+                                        .delete();
                               });
                             },
                           ),
