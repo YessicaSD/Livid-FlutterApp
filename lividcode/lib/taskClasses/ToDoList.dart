@@ -115,7 +115,9 @@ class _ToDoListState extends State<ToDoList> {
                                                 .delete();
                                             Navigator.of(context).pop();
                                           },
-                                          child: Text('DELETE',style: TextStyle(color: Colors.red))),
+                                          child: Text('DELETE',
+                                              style: TextStyle(
+                                                  color: Colors.red))),
                                       FlatButton(
                                         child: Text('CLOSE'),
                                         onPressed: () {

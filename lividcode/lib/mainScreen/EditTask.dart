@@ -20,7 +20,23 @@ class EditTask extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Task'),
+        title: Text('Edit Task2'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {
+              return Firestore.instance
+                  .collection('users')
+                  .document(user)
+                  .collection('DoingTasks')
+                  .document(task.id)
+                  .delete()
+                  .then((val) {
+                Navigator.of(context).pop();
+              });
+            },
+            icon: Icon(Icons.delete),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -34,15 +50,22 @@ class EditTask extends StatelessWidget {
               maxLines: 4,
             ),
             ComboWidget(type, user, task.id),
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
             RaisedButton(
               onPressed: () {
-                return Firestore.instance.collection('users').document(user).collection('DoingTasks').document(task.id).delete().then((val){
-                  Navigator.of(context).pop();
-                });
+                Firestore.instance
+                    .document('users/$user/DoingTasks/${task.id}')
+                    .setData(
+                        Task(name.text, description.text, type).toFirebase());
+                Navigator.of(context).pop();
               },
-              child: Text('Delete',style: TextStyle(color: Colors.white),),
-              color: Colors.red,
+              child: Text(
+                'Save',
+                style: TextStyle(color: Colors.white),
+              ),
+              color: Theme.of(context).accentColor,
             )
           ],
         ),

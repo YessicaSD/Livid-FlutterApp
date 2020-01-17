@@ -62,8 +62,7 @@ class _AddTaskState extends State<AddTask> {
           _list.taskList.clear();
           _list.taskList = new List<Task>.from(costumTasksList.taskList);
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description'],
-                statFromString(task['type']));
+            _list.addTask(Task.fromFirestore(task));
           }
 
           return Scaffold(
@@ -95,13 +94,13 @@ class _AddTaskState extends State<AddTask> {
                 itemCount: _list.length(),
                 itemBuilder: (context, i) {
                   return ListTile(
-                    onTap: () {
-                      Navigator.of(context).pop(_list.getTask(i));
-                    },
-                    title: Text(_list.getTask(i).name),
-                    subtitle: Text(_list.getTask(i).description),
-                    trailing: Text(statToString(_list.getTask(i).type)),
-                  );
+                      onTap: () {
+                        Navigator.of(context).pop(_list.getTask(i));
+                      },
+                      title: Text(_list.getTask(i).name),
+                      subtitle: Text(_list.getTask(i).description),
+                      trailing: Text(statToString(_list.getTask(i).type)),
+                      onLongPress: () => _buildShowDialog(context, i));
                 },
                 separatorBuilder: (context, index) {
                   return Divider(
@@ -110,5 +109,36 @@ class _AddTaskState extends State<AddTask> {
                 }),
           );
         });
+  }
+
+  Future _buildShowDialog(BuildContext context, int i) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete Task'),
+          content: Text('Are you sure you want to delete this task?'),
+          actions: <Widget>[
+            FlatButton(
+                onPressed: () {
+                  Firestore.instance
+                      .document('users/' +
+                          widget.user.idUser +
+                          '/CustomTasks/' +
+                          _list.getTask(i).id)
+                      .delete();
+                  Navigator.of(context).pop();
+                },
+                child: Text('DELETE', style: TextStyle(color: Colors.red))),
+            FlatButton(
+              child: Text('CLOSE'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 }
