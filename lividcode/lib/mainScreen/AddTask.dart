@@ -30,27 +30,11 @@ class _AddTaskState extends State<AddTask> {
   Future<void> _loadExamples() async {
     String data = await DefaultAssetBundle.of(context)
         .loadString('lib/info/tasksExamples.json');
-    var _jsonGames = jsonDecode(data);
+    var _jsonTasks = jsonDecode(data);
 
-    for (var i in _jsonGames['Tasks']) {
-      costumTasksList.createAddTask(i['name'], i['description'], statFromString(i['type']));
-    }
-    // if (widget.user.costumTasks != null) {
-    //   for (var task in widget.user.costumTasks) {
-    //     _list.addTask(task);
-    //   }
-    // }
-
-    try {
-      /*Directory dir = await getApplicationDocumentsDirectory();
-      File file = File('${dir.path}/fav.json');
-      String fileContents = await file.readAsString();
-      dynamic jsonFav = jsonDecode(fileContents);
-      for(var i in jsonFav){
-        _favourites[i['name']] = i['fav'];
-      }*/
-    } catch (e) {
-      print(e.toString());
+    for (var i in _jsonTasks['Tasks']) {
+      costumTasksList.createAddTask(
+          i['name'], i['description'], statFromString(i['type']));
     }
 
     super.setState(() {});
@@ -78,7 +62,8 @@ class _AddTaskState extends State<AddTask> {
           _list.taskList.clear();
           _list.taskList = new List<Task>.from(costumTasksList.taskList);
           for (var task in docs) {
-            _list.createAddTask(task['name'], task['description'], statFromString(task['type']));
+            _list.createAddTask(task['name'], task['description'],
+                statFromString(task['type']));
           }
 
           return Scaffold(
@@ -115,6 +100,7 @@ class _AddTaskState extends State<AddTask> {
                     },
                     title: Text(_list.getTask(i).name),
                     subtitle: Text(_list.getTask(i).description),
+                    trailing: Text(statToString(_list.getTask(i).type)),
                   );
                 },
                 separatorBuilder: (context, index) {

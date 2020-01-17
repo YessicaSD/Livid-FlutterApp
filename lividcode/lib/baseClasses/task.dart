@@ -29,7 +29,7 @@ class Task {
   Map<String, dynamic> toFirebase() => {
         'name': name,
         'description': description,
-        'type': type.toString(),
+        'type': statToString(type),
         'finishedTime': finishedTime,
       };
 
