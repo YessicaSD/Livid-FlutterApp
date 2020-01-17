@@ -6,15 +6,13 @@ import 'package:lividcode/baseClasses/stat.dart';
 class Task {
   String name;
   String description;
-  Float endTime;
+  Float startTime, endTime, duration;
   bool done = false;
   DateTime dateTime;
   statType type;
   int difficult = 1;
   String id;
-  DateTime finishedTime, startTime;
-  Duration duration;
-  bool startTimer = false;
+  DateTime finishedTime;
 
   Task(this.name, this.description, this.type, this.difficult);
 
@@ -29,18 +27,6 @@ class Task {
     if (doc.data['finishedTime'] != null) {
       finishedTime = (doc.data['finishedTime'] as Timestamp).toDate();
     }
-    if (doc.data['startTime'] != null) {
-      startTime = (doc.data['startTime'] as Timestamp).toDate();
-    }
-    if (doc.data['durationH'] != null &&
-        doc.data['durationM'] != null &&
-        doc.data['durationS'] != null) {
-      duration = new Duration(
-        hours: doc.data['durationH'],
-        minutes: doc.data['durationM'],
-        seconds: doc.data['durationS'],
-      );
-    }
   }
 
   Map<String, dynamic> toFirebase() => {
@@ -49,11 +35,6 @@ class Task {
         'type': statToString(type),
         'value': difficult,
         'finishedTime': finishedTime,
-        'startTimer': startTimer,
-        'startTime': startTime,
-        'durationH': duration.inHours,
-        'durationM': duration.inMinutes,
-        'durationS': duration.inSeconds,
       };
 
   String get finishedDate =>
