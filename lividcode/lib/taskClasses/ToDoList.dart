@@ -52,82 +52,118 @@ class _ToDoListState extends State<ToDoList> {
                     itemBuilder: (context, index) {
                       Task actualTask = _list.getTask(index);
                       return Card(
-                        child: ListTile(
-                          title: Text(actualTask.name),
-                          subtitle: Text(statToString(actualTask.type)),
-                          onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (_) =>
-                                      EditTask(actualTask, user.idUser))),
-                          trailing: FlatButton(
-                            shape: StadiumBorder(),
-                            color: Theme.of(context).buttonColor,
-                            child: Text('Done'),
-                            onPressed: () {
-                              actualTask.finishedTime = DateTime.now();
-                              Firestore.instance
-                                  .collection('users')
-                                  .document(user.idUser)
-                                  .collection('Stats')
-                                  .document(statToString(actualTask.type))
-                                  .get()
-                                  .then((doc) {
-                                int val = doc.data['value'];
-                                if (doc.data['value'] + actualTask.difficult >
-                                    doc.data['maxValue'])
-                                  val = doc.data['maxValue'];
-                                else
-                                  val += actualTask.difficult;
-                                doc.reference.updateData({
-                                  'value':
-                                      doc.data['value'] + actualTask.difficult
-                                });
-                              });
-                              Firestore.instance
-                                  .collection(
-                                      'users/' + user.idUser + '/DoneTasks')
-                                  .add(actualTask.toFirebase())
-                                  .then((onValue) {});
-                              Firestore.instance
-                                  .document('users/' +
-                                      user.idUser +
-                                      '/DoingTasks/' +
-                                      actualTask.id)
-                                  .delete();
-                            },
-                          ),
-                          onLongPress: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text('Delete Task'),
-                                    content: Text(
-                                        'Are you sure you want to delete this task?'),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                          onPressed: () {
-                                            Firestore.instance
-                                                .document('users/' +
-                                                    user.idUser +
-                                                    '/DoingTasks/' +
-                                                    actualTask.id)
-                                                .delete();
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('DELETE',
-                                              style: TextStyle(
-                                                  color: Colors.red))),
-                                      FlatButton(
-                                        child: Text('CLOSE'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      )
-                                    ],
-                                  );
-                                });
-                          },
+                        child: Row(
+                          children: <Widget>[
+                            RaisedButton(
+                              padding: EdgeInsets.all(0),
+                              child: (!actualTask.startTimer)
+                                  ? Icon(Icons.play_arrow)
+                                  : Icon(Icons.pause),
+                              shape: CircleBorder(),
+                              onPressed: () {
+                                actualTask.startTimer = !actualTask.startTimer;
+                                if (actualTask.startTimer) {
+                                  actualTask.startTime = DateTime.now();
+                                } else {
+                                  var new_duration = DateTime.now()
+                                      .difference(actualTask.startTime);
+                                  if (actualTask.duration != null) {
+                                    actualTask.duration += new_duration;
+                                  } else {
+                                    actualTask.duration = new_duration;
+                                  }
+                                }
+                                Firestore.instance
+                                    .document(
+                                        'users/${user.idUser}/DoingTasks/${actualTask.id}')
+                                    .setData(actualTask.toFirebase());
+                              },
+                            ),
+                            if (actualTask.duration != null)
+                              Text(
+                                  '${actualTask.duration.inHours.toString()}h ${actualTask.duration.inMinutes.toString()}m ${actualTask.duration.inSeconds.toString()}s'),
+                            Expanded(
+                              child: ListTile(
+                                title: Text(actualTask.name),
+                                subtitle: Text(statToString(actualTask.type)),
+                                onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            EditTask(actualTask, user.idUser))),
+                                trailing: FlatButton(
+                                  shape: StadiumBorder(),
+                                  color: Theme.of(context).buttonColor,
+                                  child: Text('Done'),
+                                  onPressed: () {
+                                    actualTask.finishedTime = DateTime.now();
+                                    Firestore.instance
+                                        .collection('users')
+                                        .document(user.idUser)
+                                        .collection('Stats')
+                                        .document(statToString(actualTask.type))
+                                        .get()
+                                        .then((doc) {
+                                      int val = doc.data['value'];
+                                      if (doc.data['value'] +
+                                              actualTask.difficult >
+                                          doc.data['maxValue'])
+                                        val = doc.data['maxValue'];
+                                      else
+                                        val += actualTask.difficult;
+                                      doc.reference.updateData({
+                                        'value': doc.data['value'] +
+                                            actualTask.difficult
+                                      });
+                                    });
+                                    Firestore.instance
+                                        .collection('users/' +
+                                            user.idUser +
+                                            '/DoneTasks')
+                                        .add(actualTask.toFirebase())
+                                        .then((onValue) {});
+                                    Firestore.instance
+                                        .document('users/' +
+                                            user.idUser +
+                                            '/DoingTasks/' +
+                                            actualTask.id)
+                                        .delete();
+                                  },
+                                ),
+                                onLongPress: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('Delete Task'),
+                                          content: Text(
+                                              'Are you sure you want to delete this task?'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                                onPressed: () {
+                                                  Firestore.instance
+                                                      .document('users/' +
+                                                          user.idUser +
+                                                          '/DoingTasks/' +
+                                                          actualTask.id)
+                                                      .delete();
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: Text('DELETE',
+                                                    style: TextStyle(
+                                                        color: Colors.red))),
+                                            FlatButton(
+                                              child: Text('CLOSE'),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            )
+                                          ],
+                                        );
+                                      });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
