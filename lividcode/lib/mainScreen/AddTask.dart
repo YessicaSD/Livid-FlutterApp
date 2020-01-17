@@ -8,6 +8,10 @@ import 'package:provider/provider.dart';
 import 'package:lividcode/baseClasses/user.dart';
 
 class AddTask extends StatefulWidget {
+  User user;
+
+  AddTask(this.user);
+
   @override
   _AddTaskState createState() => _AddTaskState();
 }
@@ -29,8 +33,8 @@ class _AddTaskState extends State<AddTask> {
     for (var i in _jsonGames['Tasks']) {
       _list.createAddTask(i['name'], i['description']);
     }
-    if (Provider.of<User>(context).costumTasks != null) {
-      for (var task in Provider.of<User>(context).costumTasks) {
+    if (widget.user.costumTasks != null) {
+      for (var task in widget.user.costumTasks) {
         _list.addTask(task);
       }
     }

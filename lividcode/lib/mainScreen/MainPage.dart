@@ -81,7 +81,7 @@ class MainSreen extends StatelessWidget {
             Navigator.of(context)
                 .push(
               MaterialPageRoute(
-                builder: (_) => AddTask(),
+                builder: (_) => AddTask(Provider.of<User>(context)),
               ),
             )
                 .then((value) {
