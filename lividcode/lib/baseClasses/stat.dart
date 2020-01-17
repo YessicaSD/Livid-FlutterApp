@@ -65,7 +65,7 @@ class StatList {
     return StatList(auxList);
   }
 
-  StatList.fromFirebase(CollectionReference sp) {
+  Future<void> fromFirebase(CollectionReference sp) async{
     print(sp.getDocuments().then((doc) {
       for (DocumentSnapshot docs in doc.documents) {
         switch (docs.documentID) {
