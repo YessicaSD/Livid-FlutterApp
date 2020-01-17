@@ -95,9 +95,6 @@ class MainSreen extends StatelessWidget {
                 .then((value) {
               if (value != null) {
                 if (!Provider.of<User>(context).toDoList.isInTaskList(value)) {
-                  // Provider.of<User>(context)
-                  //     .toDoList
-                  //     .createAddTask(value.name, value.description);
                   Task new_task = new Task(value.name, value.description);
                   Firestore.instance
                       .collection('users/' +
@@ -124,7 +121,7 @@ class MainSreen extends StatelessWidget {
                 Divider(color: Colors.grey[700]),
               ],
             ),
-            Text("Done List"),
+            DoneList(Provider.of<User>(context)),
           ],
         ),
         backgroundColor: Colors.deepPurple[100],
@@ -136,5 +133,21 @@ class MainSreen extends StatelessWidget {
     await Firestore.instance
         .collection('users/$path/CustomTasks')
         .add(new_task.ToFirebase());
+  }
+}
+
+class DoneList extends StatelessWidget {
+  final User user;
+  DoneList(this.user);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: user.doneList.length(),
+      separatorBuilder: (context, index) => Divider(),
+      itemBuilder: (context, index){
+        return ListTile(title: Text(user.doneList.getTask(index).name),);
+      },
+    );
   }
 }

@@ -8,6 +8,7 @@ class User {
   String imagePath;
   StatList stats;
   TaskList toDoList;
+  TaskList doneList;
   List<Task> costumTasks;
 
   User(this.idUser, this.name, this.imagePath, this.stats, this.toDoList);
@@ -16,7 +17,8 @@ class User {
       : name = 'name',
         imagePath = 'null',
         stats = StatList(List<Stat>()),
-        toDoList = TaskList.startTaskList();
+        toDoList = TaskList.startTaskList(),
+        doneList = TaskList();
 
   Future<void> fromFirestore(DocumentSnapshot doc) async {
     idUser = doc.documentID;
@@ -29,8 +31,19 @@ class User {
           .then((QuerySnapshot val) {
         if (val != null) costumTasks = toTaskList(val);
       });
+      doc.reference.collection('DoingTasks').getDocuments().then((val) {
+        if (val != null)
+          for (var d in val.documents) {
+            toDoList.createAddTask(d.data['name'], d.data['description']);
+          }
+      });
+      doc.reference.collection('DoneTasks').getDocuments().then((val){
+        if(val != null)
+        for(var d in val.documents){
+          doneList.createAddTask(d.data['name'], d.data['description']);
+        }
+      });
     });
-    print('ya he acabado eh');
   }
 
   factory User.userStart() {
